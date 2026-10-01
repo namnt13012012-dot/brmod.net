@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lấy Mã Key — KEY HUB</title>
+  <meta name="description" content="Trang lấy mã key riêng">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322c55e'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 6h2v2h-2V8zm0 4h2v6h-2v-6z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #050816;
+      --bg-card: #0f172a;
+      --accent-orange: #f97316;
+      --accent-orange-soft: rgba(249, 115, 22, 0.12);
+      --accent-green: #22c55e;
+      --text-white: #ffffff;
+      --text-dim: #94a3b8;
+      --border: rgba(255,255,255,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-white); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 48px 36px; max-width: 520px; width: 100%; text-align: center; box-shadow: 0 0 60px rgba(249,115,22,0.08); }
+    .icon { width: 80px; height: 80px; border-radius: 20px; background: var(--accent-orange-soft); display: flex; align-items: center; justify-content: center; font-size: 34px; color: var(--accent-orange); margin: 0 auto 24px; }
+    h1 { font-size: 28px; margin-bottom: 12px; }
+    p.desc { color: var(--text-dim); margin-bottom: 32px; font-size: 16px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; width: 100%; padding: 18px 24px; border-radius: 14px; border: none; font-weight: 800; font-size: 17px; cursor: pointer; text-decoration: none; transition: all 0.3s ease; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-orange), #ea580c); color: #fff; box-shadow: 0 6px 24px rgba(249,115,22,0.3); }
+    .btn-primary:hover { transform: translateY(-3px); filter: brightness(1.1); }
+    .btn-success { background: linear-gradient(135deg, var(--accent-green), #16a34a); color: #000; margin-top: 16px; display: none; }
+    .btn-success.show { display: inline-flex; }
+    .key-box { margin-top: 28px; padding: 24px; background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.15); border-radius: 16px; display: none; }
+    .key-box.show { display: block; animation: fadeInUp 0.5s ease; }
+    .key-label { font-size: 13px; color: var(--text-dim); margin-bottom: 10px; }
+    .key-code { font-family: 'Courier New', monospace; font-size: 22px; font-weight: 800; color: var(--accent-green); background: rgba(0,0,0,0.35); padding: 18px 20px; border-radius: 12px; margin-bottom: 14px; letter-spacing: 3px; }
+    .copy-btn { background: var(--accent-green); color: #000; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; font-size: 16px; }
+    .back-link { display: inline-block; margin-top: 24px; color: var(--text-dim); text-decoration: none; font-size: 14px; }
+    .back-link:hover { color: var(--accent-orange); }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon"><i class="fa-solid fa-key"></i></div>
+    <h1>Lấy Mã Key Của Bạn</h1>
+    <p class="desc">Bấm nút bên dưới → hoàn thành bước xác minh → quay lại nhận mã</p>
+
+    <a id="start-link" href="https://link4m.org/e55Eo" target="_blank" rel="noopener" class="btn btn-primary" onclick="markProcessStarted()">
+      <i class="fa-solid fa-rocket"></i> BẮT ĐẦU LẤY MÃ
+    </a>
+
+    <button id="receive-btn" class="btn btn-success" onclick="getKey()">
+      <i class="fa-solid fa-gift"></i> NHẬN MÃ NGAY
+    </button>
+
+    <div id="key-box" class="key-box">
+      <p class="key-label">✅ Mã key của bạn:</p>
+      <div id="key-code" class="key-code">---</div>
+      <button class="copy-btn" onclick="copyKey()"><i class="fa-solid fa-copy"></i> Sao chép</button>
+    </div>
+
+    <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại trang chính</a>
+  </div>
+
+  <script>
+    // Tạo key ngẫu nhiên
+    function generateKey() {
+      const num = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+      const r1 = Math.random().toString(36).slice(2,6).toUpperCase();
+      const r2 = Math.random().toString(36).slice(2,6).toUpperCase();
+      return `KEY-${num}-${r1}-${r2}`;
+    }
+
+    function markProcessStarted() {
+      localStorage.setItem('keyProcessOpened', '1');
+      alert('✅ Đang mở link...\n→ Hoàn thành xong hãy QUAY LẠI trang này!');
+    }
+
+    function checkStatus() {
+      if (localStorage.getItem('keyProcessOpened') === '1') {
+        document.getElementById('receive-btn').classList.add('show');
+      }
+    }
+
+    function getKey() {
+      const key = generateKey();
+      document.getElementById('key-code').textContent = key;
+      document.getElementById('key-box').classList.add('show');
+      localStorage.removeItem('keyProcessOpened');
+      document.getElementById('receive-btn').classList.remove('show');
+    }
+
+    function copyKey() {
+      const key = document.getElementById('key-code').textContent;
+      navigator.clipboard.writeText(key).then(() => alert('✅ Đã sao chép!'));
+    }
+
+    checkStatus();
+  </script>
+</body>
+</html>

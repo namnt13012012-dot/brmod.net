@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Trị — KEY HUB</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322c55e'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 6h2v2h-2V8zm0 4h2v6h-2v-6z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #050816;
+      --bg-card: #0f172a;
+      --bg-elevated: #1e293b;
+      --accent-green: #22c55e;
+      --accent-green-soft: rgba(34,197,94,0.12);
+      --accent-purple: #a855f7;
+      --accent-orange: #f97316;
+      --text-white: #ffffff;
+      --text-dim: #94a3b8;
+      --border: rgba(255,255,255,0.08);
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-white); min-height: 100vh; line-height: 1.6; }
+
+    /* === HEADER — khớp trang chính === */
+    .site-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; border-bottom: 1px solid var(--border); }
+    .logo-group { display: flex; align-items: center; gap: 12px; }
+    .logo-icon { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--accent-green), var(--accent-purple)); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .logo-text h1 { font-size: 18px; font-weight: 700; }
+    .logo-text p { font-size: 11px; color: var(--text-dim); }
+    .nav-tabs { display: flex; gap: 8px; }
+    .tab-btn { padding: 10px 18px; border-radius: 10px; border: none; background: transparent; color: var(--text-dim); cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.25s; }
+    .tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-white); }
+    .tab-btn.active { background: var(--accent-green-soft); color: var(--accent-green); }
+    .tab-btn.admin { background: rgba(168,85,247,0.12); color: var(--accent-purple); }
+
+    /* === MÀN HÌNH ĐĂNG NHẬP === */
+    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 80px); padding: 20px; }
+    .login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 40px 32px; max-width: 440px; width: 100%; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .login-icon { width: 64px; height: 64px; border-radius: 16px; background: var(--accent-purple); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; }
+    .login-card h2 { font-size: 22px; margin-bottom: 8px; }
+    .login-card p { color: var(--text-dim); margin-bottom: 28px; }
+    .form-group { text-align: left; margin-bottom: 18px; }
+    .form-group label { font-size: 13px; color: var(--text-dim); font-weight: 600; margin-bottom: 8px; display: block; }
+    .form-input { width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--border); background: rgba(0,0,0,0.25); color: #fff; font-size: 15px; outline: none; transition: border 0.2s; }
+    .form-input:focus { border-color: var(--accent-green); }
+    .btn { padding: 14px 24px; border-radius: 10px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.25s; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent-green), #16a34a); color: #000; width: 100%; }
+    .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: #fff; }
+    .btn-danger { background: rgba(239,68,68,0.12); color: var(--danger); }
+    .error-text { color: var(--danger); font-size: 13px; margin: 10px 0; min-height: 20px; }
+    .back-link { display: inline-block; margin-top: 24px; color: var(--text-dim); text-decoration: none; font-size: 14px; }
+    .back-link:hover { color: var(--accent-green); }
+
+    /* === BẢNG QUẢN TRỊ === */
+    .admin-layout { display: none; padding: 24px 32px; max-width: 1400px; margin: 0 auto; }
+    .admin-layout.show { display: block; }
+    .admin-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .admin-top h2 { font-size: 24px; }
+    .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; background: var(--accent-green-soft); color: var(--accent-green); font-size: 13px; font-weight: 600; }
+    .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+    .stat-label { font-size: 13px; color: var(--text-dim); margin-bottom: 6px; }
+    .stat-value { font-size: 28px; font-weight: 800; }
+    .stat-row { display: flex; align-items: center; justify-content: space-between; }
+    .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .icon-green { background: var(--accent-green-soft); color: var(--accent-green); }
+    .icon-purple { background: rgba(168,85,247,0.12); color: var(--accent-purple); }
+    .icon-orange { background: rgba(249,115,22,0.12); color: var(--accent-orange); }
+    .icon-red { background: rgba(239,68,68,0.12); color: var(--danger); }
+
+    .card-block { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 20px; }
+    .card-block h3 { font-size: 17px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .btn-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .btn-sm { padding: 10px 16px; font-size: 14px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--text-dim); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    tr:hover { background: rgba(255,255,255,0.025); }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; }
+    .badge-success { background: var(--accent-green-soft); color: var(--accent-green); }
+    .badge-purple { background: rgba(168,85,247,0.12); color: var(--accent-purple); }
+    .badge-danger { background: rgba(239,68,68,0.12); color: var(--danger); }
+    .badge-gray { background: rgba(255,255,255,0.06); color: var(--text-dim); }
+
+    .hidden-tab { display: none; }
+    .tab-content { animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    .mono { font-family: 'Courier New', monospace; font-size: 13px; }
+    .link-back { color: var(--text-dim); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; font-size: 14px; }
+    .link-back:hover { color: var(--accent-green); }
+    .action-bar { display: flex; gap: 6px; flex-wrap: wrap; }
+    .mini-btn { padding: 6px 10px; border-radius: 6px; border: none; font-size: 12px; cursor: pointer; }
+    .empty-state { text-align: center; padding: 30px; color: var(--text-dim); }
+  </style>
+</head>
+<body>
+
+<!-- === HEADER KHỚP TRANG CHÍNH === -->
+<header class="site-header">
+  <div class="logo-group">
+    <div class="logo-icon"><i class="fa-solid fa-key"></i></div>
+    <div class="logo-text">
+      <h1>KEY HUB</h1>
+      <p>Tải File & Lấy Khóa — Bảng Quản Trị</p>
+    </div>
+  </div>
+  <nav class="nav-tabs">
+    <a href="index.html" class="tab-btn"><i class="fa-solid fa-folder"></i> Trang Chủ</a>
+    <a href="index.html" class="tab-btn"><i class="fa-solid fa-unlock"></i> Lấy Khóa</a>
+    <button class="tab-btn active admin" id="admin-logout-btn" style="display:none;" onclick="doLogout()">
+      <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+    </button>
+  </nav>
+</header>
+
+<!-- === MÀN HÌNH ĐĂNG NHẬP === -->
+<div id="login-screen" class="login-wrap">
+  <div class="login-card">
+    <div class="login-icon"><i class="fa-solid fa-shield-halved"></i></div>
+    <h2>Quản Trị Hệ Thống</h2>
+    <p>Nhập mật khẩu để truy cập bảng điều khiển KEY HUB</p>
+    <div id="login-error" class="error-text"></div>
+    <input type="password" id="pass-input" class="form-input" placeholder="Nhập mật khẩu quản trị…" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn btn-primary" style="margin-top:16px;" onclick="doLogin()">
+      <i class="fa-solid fa-lock"></i> Đăng Nhập
+    </button>
+    <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại trang KEY HUB</a>
+  </div>
+</div>
+
+<!-- === BẢNG ĐIỀU KHIỂN === -->
+<div id="admin-panel" class="admin-layout">
+  <div class="admin-top">
+    <h2>Bảng Điều Khiển Quản Trị</h2>
+    <span class="status-pill"><i class="fa-solid fa-circle"></i> Đang Hoạt Động</span>
+  </div>
+
+  <div class="btn-bar">
+    <button class="btn btn-secondary btn-sm" onclick="showTab('overview')">Tổng Quan</button>
+    <button class="btn btn-secondary btn-sm" onclick="showTab('keys')">Quản Lý Key</button>
+    <button class="btn btn-secondary btn-sm" onclick="showTab('files')">Quản Lý Tệp</button>
+    <button class="btn btn-secondary btn-sm" onclick="showTab('settings')">Cài Đặt Hệ Thống</button>
+  </div>
+
+  <!-- TAB TỔNG QUAN -->
+  <div id="tab-overview" class="tab-content">
+    <div class="grid-stats">
+      <div class="stat-card">
+        <div class="stat-label">Tổng Key Trong Kho</div>
+        <div class="stat-row"><div class="stat-value" id="s-total">0</div><div class="stat-icon icon-green"><i class="fa-solid fa-boxes-stacked"></i></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Chưa Phát Hành</div>
+        <div class="stat-row"><div class="stat-value" id="s-unused">0</div><div class="stat-icon icon-purple"><i class="fa-solid fa-check-circle"></i></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Đã Cấp Phát</div>
+        <div class="stat-row"><div class="stat-value" id="s-used">0</div><div class="stat-icon icon-orange"><i class="fa-solid fa-hand-holding"></i></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Tổng Tệp Tin</div>
+        <div class="stat-row"><div class="stat-value" id="s-files">0</div><div class="stat-icon icon-green"><i class="fa-solid fa-file-code"></i></div></div>
+      </div>
+    </div>
+
+    <div class="card-block">
+      <h3>Thao Tác Nhanh</h3>
+      <div class="btn-bar">
+        <button class="btn btn-primary btn-sm" onclick="genKeysModal()"><i class="fa-solid fa-magic"></i> Tạo Key Hàng Loạt</button>
+        <button class="btn btn-secondary btn-sm" onclick="addFileModal()"><i class="fa-solid fa-plus"></i> Thêm Tệp Mới</button>
+        <button class="btn btn-secondary btn-sm" onclick="exportAllKeys()"><i class="fa-solid fa-download"></i> Xuất Tất Cả Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB QUẢN LÝ KEY -->
+  <div id="tab-keys" class="tab-content hidden-tab">
+    <div class="card-block">
+      <h3>Danh Sách Khóa Kích Hoạt</h3>
+      <div class="btn-bar">
+        <button class="btn btn-primary btn-sm" onclick="genKeysModal()"><i class="fa-solid fa-wand-magic-sparkles"></i> Tạo Key Mới</button>
+        <button class="btn btn-secondary btn-sm" onclick="clearUsedKeys()"><i class="fa-solid fa-broom"></i> Xóa Key Đã Dùng</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmClearAll()"><i class="fa-solid fa-trash"></i> Xóa Hết Kho</button>
+      </div>
+      <table>
+        <thead><tr><th>MÃ KEY</th><th>TRẠNG THÁI</th><th>NGƯỜI DÙNG / IP</th><th>THỜI GIAN</th><th>THAO TÁC</th></tr></thead>
+        <tbody id="keys-body"><tr><td colspan="5" class="empty-state">Chưa có key nào — bấm "Tạo Key Mới" để bắt đầu</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB QUẢN LÝ TỆP -->
+  <div id="tab-files" class="tab-content hidden-tab">
+    <div class="card-block">
+      <h3>Danh Sách Tệp Tải Xuống</h3>
+      <button class="btn btn-primary btn-sm" style="margin-bottom:16px;" onclick="addFileModal()"><i class="fa-solid fa-plus"></i> Thêm Tệp Mới</button>
+      <table>
+        <thead><tr><th>TÊN TỆP</th><th>PHIÊN BẢN</th><th>KÍCH THƯỚC</th><th>LINK TẢI</th><th>THAO TÁC</th></tr></thead>
+        <tbody id="files-body"><tr><td colspan="5" class="empty-state">Chưa có tệp nào — thêm tệp đầu tiên của bạn</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB CÀI ĐẶT -->
+  <div id="tab-settings" class="tab-content hidden-tab">
+    <div class="card-block">
+      <h3>Thông Tin Tài Khoản</h3>
+      <div class="form-group"><label>MẬT KHẨU HIỆN TẠI</label>
+        <input type="password" id="cur-pass" class="form-input" placeholder="Để trống nếu không đổi">
+      </div>
+      <div class="form-group"><label>MẬT KHẨU MỚI</label>
+        <input type="password" id="new-pass" class="form-input" placeholder="Tối thiểu 6 ký tự">
+      </div>
+      <div class="form-group"><label>NHẬP LẠI MẬT KHẨU MỚI</label>
+        <input type="password" id="new-pass2" class="form-input" placeholder="Nhập lại mật khẩu mới">
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="savePass()"><i class="fa-solid fa-floppy-disk"></i> Lưu Mật Khẩu</button>
+    </div>
+    <div class="card-block">
+      <h3>Cấu Hình Link4M</h3>
+      <div class="form-group"><label>LINK CHUYỂN HƯỚNG LINK4M</label>
+        <input type="url" id="link4m-url" class="form-input" placeholder="https://link4m.org/..." value="https://link4m.org/e55Eo">
+      </div>
+      <div class="form-group"><label>THỜI GIAN CHỜ TỐI THIỂU (giây)</label>
+        <input type="number" id="min-wait" class="form-input" value="15" min="5">
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="saveSettings()"><i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình</button>
+    </div>
+  </div>
+
+  <a href="index.html" class="link-back"><i class="fa-solid fa-arrow-left"></i> Quay lại trang KEY HUB</a>
+</div>
+
+<script>
+// === CẤU HÌNH ===
+const ADMIN_PASS_STORED = localStorage.getItem('adminPass') || 'nguyenthanhnam@1301';
+let keys = JSON.parse(localStorage.getItem('hubKeys') || '[]');
+let files = JSON.parse(localStorage.getItem('hubFiles') || '[]');
+let settings = JSON.parse(localStorage.getItem('hubSettings') || '{"link4m":"https://link4m.org/e55Eo","wait":15}');
+
+// === ĐĂNG NHẬP ===
+function doLogin() {
+  const input = document.getElementById('pass-input').value;
+  if(input === ADMIN_PASS_STORED) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').classList.add('show');
+    document.getElementById('admin-logout-btn').style.display = 'inline-flex';
+    renderStats(); renderKeys(); renderFiles(); loadSettings();
+  } else {
+    document.getElementById('login-error').textContent = '❌ Mật khẩu không đúng!';
+  }
+}
+function doLogout() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-panel').classList.remove('show');
+  document.getElementById('admin-logout-btn').style.display = 'none';
+  document.getElementById('pass-input').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+// === TAB ===
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.add('hidden-tab'));
+  document.getElementById('tab-'+name).classList.remove('hidden-tab');
+}
+
+// === THỐNG KÊ ===
+function renderStats() {
+  const total = keys.length;
+  const unused = keys.filter(k=>!k.claimed).length;
+  const used = total - unused;
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-unused').textContent = unused;
+  document.getElementById('s-used').textContent = used;
+  document.getElementById('s-files').textContent = files.length;
+}
+
+// === QUẢN LÝ KEY ===
+function makeKey() {
+  const num = String(Math.floor(Math.random()*10000)).padStart(4,'0');
+  const r1 = Math.random().toString(36).slice(2,6).toUpperCase();
+  const r2 = Math.random().toString(36).slice(2,6).toUpperCase();
+  return `KEY-${num}-${r1}-${r2}`;
+}
+function genKeysModal() {
+  const count = parseInt(prompt('Số lượng key muốn tạo:', '20'));
+  if(!count || count<1) return;
+  for(let i=0;i<Math.min(count,200);i++) {
+    keys.push({id:makeKey(),claimed:false,claimedBy:null,time:null});
+  }
+  saveKeys(); renderStats(); renderKeys();
+  alert(`✅ Đã tạo ${count} key mới!`);
+}
+function renderKeys() {
+  const tb = document.getElementById('keys-body');
+  if(!keys.length) { tb.innerHTML='<tr><td colspan="5" class="empty-state">Chưa có key nào</td></tr>'; return; }
+  tb.innerHTML = keys.map((k,i)=>`<tr>
+    <td class="mono">${k.id}</td>
+    <td><span class="badge ${k.claimed?'badge-gray':'badge-success'}">${k.claimed?'Đã cấp':'Sẵn sàng'}</span></td>
+    <td>${k.claimedBy||'—'}</td>
+    <td>${k.time||'—'}</td>
+    <td class="action-bar">
+      ${!k.claimed?`<button class="mini-btn" onclick="copyKey('${k.id}')">Sao chép</button>`:''}
+      <button class="mini-btn" style="background:var(--danger);color:#fff;" onclick="delKey(${i})">Xóa</button>
+    </td>
+  </tr>`).join('');
+}
+function copyKey(id) {
+  navigator.clipboard.writeText(id).then(()=>alert('✅ Đã sao chép!'));
+}
+function delKey(i) {
+  if(confirm('Xóa key này?')) { keys.splice(i,1); saveKeys(); renderStats(); renderKeys(); }
+}
+function clearUsedKeys() {
+  if(!confirm('Xóa toàn bộ key đã cấp?')) return;
+  keys = keys.filter(k=>!k.claimed); saveKeys(); renderStats(); renderKeys();
+}
+function confirmClearAll() {
+  if(confirm('⚠️ XÓA HẾT TOÀN BỘ KEY? Không thể hoàn tác!')) {
+    keys=[]; saveKeys(); renderStats(); renderKeys();
+  }
+}
+function exportAllKeys() {
+  const txt = keys.map(k=>k.id).join('\n');
+  const blob = new Blob([txt],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='danh-sach-key.txt'; a.click();
+}
+function saveKeys() { localStorage.setItem('hubKeys', JSON.stringify(keys)); }
+
+// === QUẢN LÝ TỆP ===
+function addFileModal() {
+  const name = prompt('Tên tệp:', 'BRMOD'); if(!name) return;
+  const ver = prompt('Phiên bản:', 'v2.0'); if(!ver) return;
+  const size = prompt('Kích thước:', '20.6 MB'); if(!size) return;
+  const link = prompt('Link tải:', 'https://'); if(!link) return;
+  files.push({name,ver,size,link}); saveFiles(); renderStats(); renderFiles();
+}
+function renderFiles() {
+  const tb = document.getElementById('files-body');
+  if(!files.length) { tb.innerHTML='<tr><td colspan="5" class="empty-state">Chưa có tệp nào</td></tr>'; return; }
+  tb.innerHTML = files.map((f,i)=>`<tr>
+    <td><strong>${f.name}</strong></td>
+    <td>${f.ver}</td>
+    <td>${f.size}</td>
+    <td><a href="${f.link}" target="_blank" style="color:var(--accent-green);">Mở link</a></td>
+    <td><button class="mini-btn" style="background:var(--danger);color:#fff;" onclick="delFile(${i})">Xóa</button></td>
+  </tr>`).join('');
+}
+function delFile(i) {
+  if(confirm('Xóa tệp này?')) { files.splice(i,1); saveFiles(); renderStats(); renderFiles(); }
+}
+function saveFiles() { localStorage.setItem('hubFiles', JSON.stringify(files)); }
+
+// === CÀI ĐẶT ===
+function loadSettings() {
+  document.getElementById('link4m-url').value = settings.link4m;
+  document.getElementById('min-wait').value = settings.wait;
+}
+function saveSettings() {
+  settings.link4m = document.getElementById('link4m-url').value;
+  settings.wait = parseInt(document.getElementById('min-wait').value);
+  localStorage.setItem('hubSettings', JSON.stringify(settings));
+  alert('✅ Đã lưu cấu hình!');
+}
+function savePass() {
+  const cur = document.getElementById('cur-pass').value;
+  const p1 = document.getElementById('new-pass').value;
+  const p2 = document.getElementById('new-pass2').value;
+  if(!p1 && !p2) { alert('Không có thay đổi'); return; }
+  if(p1.length<6) { alert('Mật khẩu mới ít nhất 6 ký tự'); return; }
+  if(p1!==p2) { alert('Mật khẩu nhập lại không khớp'); return; }
+  if(cur && cur!==ADMIN_PASS_STORED) { alert('Mật khẩu hiện tại không đúng'); return; }
+  localStorage.setItem('adminPass', p1);
+  alert('✅ Đổi mật khẩu thành công!');
+  location.reload();
+}
+</script>
+</body>
+</html>

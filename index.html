@@ -93,7 +93,7 @@
     }
     .btn-green:active { transform: translateY(0); }
     
-    /* ========== TAB LẤY KHÓA — TRANG RIÊNG, ĐẸP ========== */
+    /* ========== TAB LẤY KHÓA ========== */
     .getkey-hero { text-align: center; margin-bottom: 32px; }
     .getkey-badge { display: inline-flex; align-items: center; gap: 10px; background: var(--accent-orange-soft); color: var(--accent-orange); padding: 10px 24px; border-radius: 50px; font-size: 14px; font-weight: 700; margin-bottom: 20px; }
     .getkey-badge i { font-size: 16px; }
@@ -205,15 +205,15 @@
     .key-result-box.admin-mode .key-display-code { color: var(--accent-purple); border-color: rgba(168,85,247,0.15); }
     .key-expire { font-size: 12px; color: var(--text-dim); margin-bottom: 18px; text-align: center; }
     .key-actions-row { display: flex; gap: 12px; flex-wrap: wrap; }
-    .copy-key-btn { flex: 1; min-width: 140px; background: var(--accent-green); color: #000; font-weight: 700; }
+    .copy-key-btn { flex: 1; min-width: 140px; background: var(--accent-green); color: #000; font-weight: 700; border: none; border-radius: 10px; padding: 12px; cursor: pointer; }
     .copy-key-btn.admin-mode { background: var(--accent-purple); color: #fff; }
-    .new-key-btn { flex: 1; min-width: 140px; background: rgba(255,255,255,0.08); color: #fff; font-weight: 600; }
+    .new-key-btn { flex: 1; min-width: 140px; background: rgba(255,255,255,0.08); color: #fff; font-weight: 600; border: none; border-radius: 10px; padding: 12px; cursor: pointer; }
     
-    /* Tab Content */
+    /* Tab Content — QUAN TRỌNG: Sửa lỗi ẩn/hiện */
     .tab-content { display: none; }
     .tab-content.active { display: block; }
     
-    /* Check & Admin */
+    /* Check & Admin Panel */
     .panel-box { background: var(--bg-card); border-radius: 20px; padding: 36px; max-width: 540px; margin: 0 auto; border: 1px solid var(--border); }
     .panel-box h3 { text-align: center; margin-bottom: 24px; font-size: 20px; font-weight: 700; }
     .form-group { margin-bottom: 20px; }
@@ -307,7 +307,7 @@
       </div>
     </section>
 
-    <!-- TAB 2: LẤY KHÓA — TRANG RIÊNG, ĐẸP -->
+    <!-- TAB 2: LẤY KHÓA -->
     <section class="tab-content" id="tab-getkey">
       <div class="getkey-hero">
         <div class="getkey-badge">
@@ -342,13 +342,11 @@
           </div>
         </div>
         
-        <!-- Nút Bắt Đầu — Điền link4m của bạn vào href -->
         <a id="start-link" href="https://link4m.org/e55Eo" target="_blank" rel="noopener" class="main-action-btn" onclick="if(isAdmin){event.preventDefault();adminGetKey();return false;}markProcessStarted();">
           <i class="fa-solid fa-rocket"></i>
           <span id="start-btn-text">BẮT ĐẦU LẤY KHÓA</span>
         </a>
         
-        <!-- Thông báo quay lại & Nút Nhận Key — Ẩn cho đến khi quay lại -->
         <div class="return-notice" id="return-notice-box">
           <p><i class="fa-solid fa-check-circle"></i> ✅ Đã phát hiện bạn quay lại! Bấm bên dưới để nhận key</p>
         </div>
@@ -356,16 +354,15 @@
           <i class="fa-solid fa-gift"></i> NHẬN KEY NGAY
         </button>
         
-        <!-- Hiển Thị Key — Ẩn cho đến khi nhận -->
         <div class="key-result-box" id="key-result-display">
           <p class="key-label">✅ Khóa kích hoạt của bạn</p>
           <div class="key-display-code" id="the-key-code">---</div>
           <p class="key-expire"><i class="fa-solid fa-clock"></i> Hạn sử dụng: 24 giờ kể từ lúc nhận</p>
           <div class="key-actions-row">
-            <button class="btn copy-key-btn" id="copy-btn-main" onclick="copyTheKey()">
+            <button class="copy-key-btn" id="copy-btn-main" onclick="copyTheKey()">
               <i class="fa-solid fa-copy"></i> Sao Chép
             </button>
-            <button class="btn new-key-btn" onclick="resetKeyFlow()">
+            <button class="new-key-btn" onclick="resetKeyFlow()">
               <i class="fa-solid fa-rotate-right"></i> Lấy Key Mới
             </button>
           </div>
@@ -405,7 +402,7 @@
               <input type="password" id="admin-pass-input" class="form-input" placeholder="Nhập mật khẩu..." required>
             </div>
             <p id="admin-login-err" style="color: #ef4444; font-size: 13px; margin-bottom: 14px; display: none;">Tài khoản hoặc mật khẩu không đúng!</p>
-            <button type="submit" class="btn" style="width: 100%; background: linear-gradient(135deg, var(--accent-purple), #9333ea); color: #fff;">
+            <button type="submit" class="btn" style="width: 100%; background: linear-gradient(135deg, var(--accent-purple), #9333ea); color: #fff; border: none; border-radius: 10px; padding: 12px;">
               <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
             </button>
           </form>
@@ -430,19 +427,19 @@
           </div>
           <div style="background: rgba(168,85,247,0.06); border-radius: 14px; padding: 24px; margin-bottom: 20px; border: 1px solid rgba(168,85,247,0.15);">
             <h4 style="color: var(--accent-purple); margin-bottom: 12px; font-size: 16px;"><i class="fa-solid fa-bolt"></i> Tạo Key Ngay (Bỏ Qua Link4M)</h4>
-            <button class="btn" style="width: 100%; margin-bottom: 16px; background: linear-gradient(135deg, var(--accent-purple), #9333ea); color: #fff;" onclick="adminGetKey()">
+            <button class="btn" style="width: 100%; margin-bottom: 16px; background: linear-gradient(135deg, var(--accent-purple), #9333ea); color: #fff; border: none; border-radius: 10px; padding: 12px;" onclick="adminGetKey()">
               <i class="fa-solid fa-key"></i> TẠO 1 KEY NGAY
             </button>
             <div id="admin-gen-out" style="display: none; padding: 16px; background: rgba(0,0,0,0.3); border-radius: 10px;">
               <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 8px;">Key mới tạo:</p>
               <code style="font-size: 18px; font-weight: 700; color: var(--accent-purple); font-family: monospace;" id="admin-new-key-out">---</code>
               <div style="margin-top: 12px; display: flex; gap: 10px;">
-                <button class="btn copy-key-btn admin-mode" onclick="copyAdminGenKey()"><i class="fa-solid fa-copy"></i> Sao Chép</button>
-                <button class="btn new-key-btn" onclick="adminGetKey()">Tạo Khác</button>
+                <button class="copy-key-btn admin-mode" onclick="copyAdminGenKey()"><i class="fa-solid fa-copy"></i> Sao Chép</button>
+                <button class="new-key-btn" onclick="adminGetKey()">Tạo Khác</button>
               </div>
             </div>
           </div>
-          <button class="btn new-key-btn" onclick="doAdminLogout()">
+          <button class="new-key-btn" onclick="doAdminLogout()">
             <i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất
           </button>
         </div>
@@ -455,195 +452,203 @@
   </div>
 
   <script>
-const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'nguyenthanhnam@1301';
+    // === CẤU HÌNH ===
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'nguyenthanhnam@1301';
 
-// Tạo 1000 key tự động
-const keyList = [];
-for (let i = 1; i <= 1000; i++) {
-  const num = String(i).padStart(4, '0');
-  const r1 = Math.random().toString(36).slice(2,6).toUpperCase();
-  const r2 = Math.random().toString(36).slice(2,6).toUpperCase();
-  keyList.push(`KEY-${num}-${r1}-${r2}`);
-}
+    // Tạo 1000 key tự động
+    const keyList = [];
+    for (let i = 1; i <= 1000; i++) {
+      const num = String(i).padStart(4, '0');
+      const r1 = Math.random().toString(36).slice(2,6).toUpperCase();
+      const r2 = Math.random().toString(36).slice(2,6).toUpperCase();
+      keyList.push(`KEY-${num}-${r1}-${r2}`);
+    }
 
-let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
-let isAdmin = localStorage.getItem('isAdminLoggedIn') === 'true';
-let lastAdminKey = '';
+    let usedKeys = JSON.parse(localStorage.getItem('usedKeys') || '[]');
+    let isAdmin = localStorage.getItem('isAdminLoggedIn') === 'true';
+    let lastAdminKey = '';
 
-function refreshStock() {
-  const rem = keyList.length - usedKeys.length;
-  document.getElementById('stock-count-main').textContent = rem;
-  if (document.getElementById('stat-total-k')) document.getElementById('stat-total-k').textContent = keyList.length;
-  if (document.getElementById('stat-used-k')) document.getElementById('stat-used-k').textContent = usedKeys.length;
-  if (document.getElementById('stat-remain-k')) document.getElementById('stat-remain-k').textContent = rem;
-}
-refreshStock();
+    // === CẬP NHẬT SỐ LƯỢNG ===
+    function refreshStock() {
+      const rem = keyList.length - usedKeys.length;
+      const stockEl = document.getElementById('stock-count-main');
+      if (stockEl) stockEl.textContent = rem;
+      
+      const totalEl = document.getElementById('stat-total-k');
+      const usedEl = document.getElementById('stat-used-k');
+      const remainEl = document.getElementById('stat-remain-k');
+      
+      if (totalEl) totalEl.textContent = keyList.length;
+      if (usedEl) usedEl.textContent = usedKeys.length;
+      if (remainEl) remainEl.textContent = rem;
+    }
 
-// Chuyển tab
-document.querySelectorAll('.tab-btn').forEach(b => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
-    b.classList.add('active');
-    document.getElementById('tab-' + b.dataset.tab).classList.add('active');
-  });
-});
+    // === SỬA LỖI CHUYỂN TAB — Đã sửa hoàn chỉnh ===
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
 
-// Áp dụng giao diện Admin
-function applyAdminUI() {
-  const card = document.getElementById('getkey-card-main');
-  const badge = document.querySelector('.getkey-badge');
-  const stockBadge = document.getElementById('stock-badge-main');
-  const stepsWrap = document.getElementById('steps-wrap-main');
-  const startBtn = document.getElementById('start-link');
-  const startText = document.getElementById('start-btn-text');
-  
-  if (isAdmin) {
-    document.getElementById('mode-label').innerHTML = 'Quản Trị Viên <span class="admin-badge"><i class="fa-solid fa-shield-halved"></i> Bỏ Qua Link4M</span>';
-    card.classList.add('admin-mode');
-    badge.innerHTML = '<i class="fa-solid fa-bolt"></i> CHẾ ĐỘ ADMIN — Bỏ qua Link4M';
-    stockBadge.classList.add('admin-mode');
-    stockBadge.querySelector('.stock-dot').style.background = 'var(--accent-purple)';
-    stepsWrap.classList.add('admin-mode');
-    startBtn.classList.add('admin-mode');
-    startText.textContent = '⚡ TẠO KEY NGAY';
-    // Ẩn các phần người dùng bình thường
-    document.getElementById('return-notice-box').classList.remove('show');
-    document.getElementById('receive-btn-main').classList.remove('show');
-  } else {
-    document.getElementById('mode-label').textContent = 'Tải File & Lấy Khóa';
-    card.classList.remove('admin-mode');
-    badge.innerHTML = '<i class="fa-solid fa-bolt"></i> Nhận Key Ngay Lập Tức';
-    stockBadge.classList.remove('admin-mode');
-    stockBadge.querySelector('.stock-dot').style.background = 'var(--accent-green)';
-    stepsWrap.classList.remove('admin-mode');
-    startBtn.classList.remove('admin-mode');
-    startText.textContent = 'BẮT ĐẦU LẤY KHÓA';
-    // Kiểm tra trạng thái quay lại từ link
-    checkBackFromLink();
-  }
-}
-applyAdminUI();
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const targetTab = this.getAttribute('data-tab');
+          
+          // Tắt tất cả tab
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          
+          // Bật tab được chọn
+          this.classList.add('active');
+          const targetContent = document.getElementById('tab-' + targetTab);
+          if (targetContent) {
+            targetContent.classList.add('active');
+          }
+          
+          // Nếu chuyển sang tab Lấy Khóa → kiểm tra trạng thái
+          if (targetTab === 'getkey') {
+            checkBackFromLink();
+            applyAdminUI();
+          }
+          
+          // Nếu chuyển sang tab Quản Trị → cập nhật số liệu
+          if (targetTab === 'admin') {
+            refreshStock();
+          }
+        });
+      });
+    });
 
-// Đánh dấu bắt đầu mở link — KHÔNG hiện nút ngay
-function markProcessStarted() {
-  localStorage.setItem('keyProcessOpened', '1');
-  alert('✅ Đang mở Link4M...\n\nHoàn thành vượt link xong → QUAY LẠI trang này\n→ sẽ tự hiện nút Nhận Key!');
-}
+    // === ÁP DỤNG GIAO DIỆN ADMIN ===
+    function applyAdminUI() {
+      const card = document.getElementById('getkey-card-main');
+      if (!card) return;
+      
+      const badge = document.querySelector('.getkey-badge');
+      const stockBadge = document.getElementById('stock-badge-main');
+      const stepsWrap = document.getElementById('steps-wrap-main');
+      const startBtn = document.getElementById('start-link');
+      const startText = document.getElementById('start-btn-text');
+      
+      if (isAdmin) {
+        document.getElementById('mode-label').innerHTML = 'Quản Trị Viên <span class="admin-badge"><i class="fa-solid fa-shield-halved"></i> Bỏ Qua Link4M</span>';
+        card.classList.add('admin-mode');
+        if (badge) badge.innerHTML = '<i class="fa-solid fa-bolt"></i> CHẾ ĐỘ ADMIN — Bỏ qua Link4M';
+        if (stockBadge) stockBadge.classList.add('admin-mode');
+        const dot = document.querySelector('.stock-dot');
+        if (dot) dot.style.background = 'var(--accent-purple)';
+        if (stepsWrap) stepsWrap.classList.add('admin-mode');
+        if (startBtn) startBtn.classList.add('admin-mode');
+        if (startText) startText.textContent = '⚡ TẠO KEY NGAY';
+      } else {
+        document.getElementById('mode-label').textContent = 'Tải File & Lấy Khóa';
+        card.classList.remove('admin-mode');
+        if (badge) badge.innerHTML = '<i class="fa-solid fa-bolt"></i> Nhận Key Ngay Lập Tức';
+        if (stockBadge) stockBadge.classList.remove('admin-mode');
+        const dot = document.querySelector('.stock-dot');
+        if (dot) dot.style.background = 'var(--accent-green)';
+        if (stepsWrap) stepsWrap.classList.remove('admin-mode');
+        if (startBtn) startBtn.classList.remove('admin-mode');
+        if (startText) startText.textContent = 'BẮT ĐẦU LẤY KHÓA';
+      }
+    }
 
-// Kiểm tra khi trang tải lại — có quay lại từ link không?
-function checkBackFromLink() {
-  if (isAdmin) return;
-  const opened = localStorage.getItem('keyProcessOpened');
-  if (opened === '1') {
-    document.getElementById('return-notice-box').classList.add('show');
-    document.getElementById('receive-btn-main').classList.add('show');
-  } else {
-    document.getElementById('return-notice-box').classList.remove('show');
-    document.getElementById('receive-btn-main').classList.remove('show');
-  }
-}
+    // === ĐÁNH DẤU BẮT ĐẦU MỞ LINK ===
+    function markProcessStarted() {
+      localStorage.setItem('keyProcessOpened', '1');
+      alert('✅ Đang mở Link4M...\n\nHoàn thành vượt link xong → QUAY LẠI trang này\n→ sẽ tự hiện nút Nhận Key!');
+    }
 
-// Nhận key
-function assignKeyToUser() {
-  if (localStorage.getItem('keyProcessOpened') !== '1') {
-    alert('⚠️ Bạn chưa hoàn thành bước vượt Link4M!');
-    return;
-  }
-  const avail = keyList.find(k => !usedKeys.includes(k));
-  if (!avail) { alert('❌ Hết key trong kho!'); return; }
-  
-  usedKeys.push(avail);
-  localStorage.setItem('usedKeys', JSON.stringify(usedKeys));
-  
-  document.getElementById('the-key-code').textContent = avail;
-  document.getElementById('key-result-display').classList.add('show');
-  
-  // Xóa đánh dấu sau khi nhận
-  localStorage.removeItem('keyProcessOpened');
-  document.getElementById('return-notice-box').classList.remove('show');
-  document.getElementById('receive-btn-main').classList.remove('show');
-  
-  refreshStock();
-}
+    // === KIỂM TRA KHI QUAY LẠI TỪ LINK ===
+    function checkBackFromLink() {
+      if (isAdmin) return;
+      
+      const opened = localStorage.getItem('keyProcessOpened');
+      const returnBox = document.getElementById('return-notice-box');
+      const receiveBtn = document.getElementById('receive-btn-main');
+      
+      if (opened === '1') {
+        if (returnBox) returnBox.classList.add('show');
+        if (receiveBtn) receiveBtn.classList.add('show');
+      } else {
+        if (returnBox) returnBox.classList.remove('show');
+        if (receiveBtn) receiveBtn.classList.remove('show');
+      }
+    }
 
-// Admin tạo key trực tiếp
-function adminGetKey() {
-  const avail = keyList.find(k => !usedKeys.includes(k));
-  if (!avail) { alert('❌ Hết key!'); return; }
-  
-  usedKeys.push(avail);
-  localStorage.setItem('usedKeys', JSON.stringify(usedKeys));
-  lastAdminKey = avail;
-  
-  document.getElementById('the-key-code').textContent = avail;
-  document.getElementById('key-result-display').classList.add('show', 'admin-mode');
-  document.getElementById('admin-new-key-out').textContent = avail;
-  document.getElementById('admin-gen-out').style.display = 'block';
-  
-  refreshStock();
-  document.querySelector('[data-tab="getkey"]').click();
-}
+    // === NHẬN KEY ===
+    function assignKeyToUser() {
+      if (localStorage.getItem('keyProcessOpened') !== '1') {
+        alert('⚠️ Bạn chưa hoàn thành bước vượt Link4M!');
+        return;
+      }
+      
+      const avail = keyList.find(k => !usedKeys.includes(k));
+      if (!avail) { alert('❌ Hết key trong kho!'); return; }
+      
+      usedKeys.push(avail);
+      localStorage.setItem('usedKeys', JSON.stringify(usedKeys));
+      
+      document.getElementById('the-key-code').textContent = avail;
+      document.getElementById('key-result-display').classList.add('show');
+      
+      // Xóa đánh dấu
+      localStorage.removeItem('keyProcessOpened');
+      const returnBox = document.getElementById('return-notice-box');
+      const receiveBtn = document.getElementById('receive-btn-main');
+      if (returnBox) returnBox.classList.remove('show');
+      if (receiveBtn) receiveBtn.classList.remove('show');
+      
+      refreshStock();
+    }
 
-// Sao chép key
-function copyTheKey() {
-  navigator.clipboard.writeText(document.getElementById('the-key-code').textContent).then(() => alert('✅ Đã sao chép!'));
-}
-function copyAdminGenKey() {
-  navigator.clipboard.writeText(lastAdminKey).then(() => alert('✅ Đã sao chép key!'));
-}
+    // === ADMIN TẠO KEY TRỰC TIẾP ===
+    function adminGetKey() {
+      const avail = keyList.find(k => !usedKeys.includes(k));
+      if (!avail) { alert('❌ Hết key!'); return; }
+      
+      usedKeys.push(avail);
+      localStorage.setItem('usedKeys', JSON.stringify(usedKeys));
+      lastAdminKey = avail;
+      
+      document.getElementById('the-key-code').textContent = avail;
+      const resultBox = document.getElementById('key-result-display');
+      resultBox.classList.add('show', 'admin-mode');
+      
+      document.getElementById('admin-new-key-out').textContent = avail;
+      document.getElementById('admin-gen-out').style.display = 'block';
+      
+      refreshStock();
+      
+      // Tự chuyển sang tab Lấy Khóa
+      document.querySelector('[data-tab="getkey"]').click();
+    }
 
-// Reset lấy key mới
-function resetKeyFlow() {
-  document.getElementById('key-result-display').classList.remove('show', 'admin-mode');
-  document.getElementById('admin-gen-out').style.display = 'none';
-  localStorage.removeItem('keyProcessOpened');
-  document.getElementById('return-notice-box').classList.remove('show');
-  document.getElementById('receive-btn-main').classList.remove('show');
-}
+    // === SAO CHÉP KEY ===
+    function copyTheKey() {
+      const code = document.getElementById('the-key-code').textContent;
+      navigator.clipboard.writeText(code).then(() => alert('✅ Đã sao chép!'));
+    }
+    function copyAdminGenKey() {
+      navigator.clipboard.writeText(lastAdminKey).then(() => alert('✅ Đã sao chép key!'));
+    }
 
-// Đăng nhập Admin
-function handleAdminLogin(e) {
-  e.preventDefault();
-  const u = document.getElementById('admin-user-input').value.trim();
-  const p = document.getElementById('admin-pass-input').value.trim();
-  
-  if (u === ADMIN_USER && p === ADMIN_PASS) {
-    isAdmin = true;
-    localStorage.setItem('isAdminLoggedIn', 'true');
-    document.getElementById('admin-login-view').style.display = 'none';
-    document.getElementById('admin-dash-view').style.display = 'block';
-    applyAdminUI();
-    refreshStock();
-  } else {
-    document.getElementById('admin-login-err').style.display = 'block';
-  }
-}
+    // === LẤY KEY MỚI ===
+    function resetKeyFlow() {
+      const resultBox = document.getElementById('key-result-display');
+      if (resultBox) resultBox.classList.remove('show', 'admin-mode');
+      document.getElementById('admin-gen-out').style.display = 'none';
+      localStorage.removeItem('keyProcessOpened');
+      const returnBox = document.getElementById('return-notice-box');
+      const receiveBtn = document.getElementById('receive-btn-main');
+      if (returnBox) returnBox.classList.remove('show');
+      if (receiveBtn) receiveBtn.classList.remove('show');
+    }
 
-// Đăng xuất
-function doAdminLogout() {
-  isAdmin = false;
-  localStorage.removeItem('isAdminLoggedIn');
-  localStorage.removeItem('keyProcessOpened');
-  document.getElementById('admin-login-view').style.display = 'block';
-  document.getElementById('admin-dash-view').style.display = 'none';
-  document.getElementById('admin-user-input').value = '';
-  document.getElementById('admin-pass-input').value = '';
-  document.getElementById('admin-login-err').style.display = 'none';
-  resetKeyFlow();
-  applyAdminUI();
-}
-
-// Kiểm tra key
-function checkKeyStatus(e) {
-  e.preventDefault();
-  const input = document.getElementById('check-input').value.trim().toUpperCase();
-  const box = document.getElementById('check-result-display');
-  
-  if (usedKeys.includes(input)) {
-    box.className = 'check-result valid';
-    box.innerHTML = `<p style="color: #86efac; font-weight: 600; font-size: 15px;"><i class="fa-solid fa-circle-check"></i> Key Hợp Lệ ✅</p><p style="font-size: 13px; color: var(--text-dim); margin-top: 6px;">Đã cấp và còn hạn sử dụng.</p>`;
-  } else if (keyList.includes(input)) {
-    box.className = 'check-result valid';
-    box.innerHTML = `<p style="color: #fde047; font-weight: 600; font-size: 15px;"><i class="fa-solid fa-clock"></i> Chưa Được Phát Hành ⏳</p><p style="font-size: 13px; color: var(--text-dim); margin-top: 6px;">Key tồn tại nhưng chưa
+    // === ĐĂNG NHẬP ADMIN ===
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('admin-user-input').value.trim();
+      const p = document.getElementById('admin-pass-input').value.trim();
+      
+      if (u === ADMIN_USER && p === ADMIN_PASS) {
+        is

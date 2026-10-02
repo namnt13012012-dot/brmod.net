@@ -4,16 +4,22 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'brmod_keys');
 define('DB_USER', 'root');
 define('DB_PASS', '');
+
+// === TÀI KHOẢN ADMIN ===
 define('ADMIN_USER', 'admin');
-define('ADMIN_PASS_HASH', hash('sha256', 'mat_khau_manh_cua_ban')); // Đổi mật khẩu!
+define('ADMIN_PASS_HASH', hash('sha256', 'nguyenthanhnam@1301'));
 define('SALT', 'thay-doi-thanh-chuoi-ngau-nhien-123456');
 
 // === Kết nối CSDL ===
 try {
-  $db = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME.";charset=utf8mb4", DB_USER, DB_PASS,
-    [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
-} catch(PDOException $e) {
-  die("Kết nối thất bại: " . $e->getMessage());
+    $db = new PDO(
+        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+        DB_USER,
+        DB_PASS,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+} catch (PDOException $e) {
+    die("Kết nối thất bại: " . $e->getMessage());
 }
 
 // === Tạo bảng nếu chưa có ===

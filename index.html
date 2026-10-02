@@ -1,275 +1,231 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KeyGuard Pro — Tải Tệp & Khóa Kích Hoạt</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-        :root {
-            --bg-main: #050816;
-            --bg-card: #0f172a;
-            --bg-soft: #1e293b;
-            --accent-1: #06b6d4;
-            --accent-2: #8b5cf6;
-            --accent-3: #10b981;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border: rgba(148, 163, 184, 0.15);
-        }
-        body {
-            background: linear-gradient(135deg, var(--bg-main) 0%, #0c1a2f 100%);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 0;
-        }
-        /* Header */
-        header {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 24px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .brand-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 700;
-            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.25);
-        }
-        .brand-text h3 {
-            font-size: 18px;
-            letter-spacing: 0.5px;
-        }
-        .brand-text p {
-            font-size: 11px;
-            color: var(--text-secondary);
-        }
-        nav {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        nav a {
-            padding: 10px 18px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .nav-item {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid transparent;
-        }
-        .nav-item:hover {
-            background: rgba(6, 182, 212, 0.08);
-            color: var(--accent-1);
-            border-color: rgba(6, 182, 212, 0.2);
-        }
-        .nav-secure {
-            background: rgba(139, 92, 246, 0.12);
-            color: #c4b5fd;
-        }
-        .nav-secure:hover {
-            background: rgba(139, 92, 246, 0.2);
-        }
-        .nav-admin {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
-        }
-        .nav-admin:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
-        }
-        /* Hero Section */
-        main {
-            max-width: 1000px;
-            margin: 60px auto;
-            padding: 0 20px;
-            text-align: center;
-        }
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(16, 185, 129, 0.08);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            color: #6ee7b7;
-            padding: 10px 24px;
-            border-radius: 50px;
-            font-size: 14px;
-            margin-bottom: 36px;
-        }
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        h1 {
-            font-size: clamp(2.4rem, 5vw, 3.6rem);
-            line-height: 1.15;
-            margin-bottom: 24px;
-        }
-        .text-gradient-1 {
-            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .text-gradient-2 {
-            background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .lead {
-            color: var(--text-secondary);
-            font-size: 17px;
-            max-width: 680px;
-            margin: 0 auto 48px;
-            line-height: 1.7;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-            margin-bottom: 50px;
-        }
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 24px;
-            text-align: left;
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(6, 182, 212, 0.25);
-        }
-        .feature-icon {
-            font-size: 24px;
-            margin-bottom: 12px;
-        }
-        .feature-title {
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .feature-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            padding: 14px 36px;
-            background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
-            color: white;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.25);
-            transition: all 0.3s ease;
-        }
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.35);
-        }
-        /* Responsive */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 16px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRMOD — Hologram Universe</title>
+<style>
+:root {
+  --holo-cyan: #00e5ff;
+  --holo-magenta: #ff00e5;
+  --holo-violet: #8b5cf6;
+  --bg-deep: #020617;
+  --glow-cyan: 0 0 12px rgba(0,229,255,0.6), 0 0 40px rgba(0,229,255,0.2);
+  --glow-magenta: 0 0 12px rgba(255,0,229,0.6), 0 0 40px rgba(255,0,229,0.2);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg-deep);
+  color: #fff;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+#universe {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
+}
+.scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(transparent, transparent 2px, rgba(0,229,255,0.03) 2px, rgba(0,229,255,0.03) 4px);
+  pointer-events: none;
+  z-index: 2;
+}
+.content {
+  position: relative;
+  z-index: 3;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+.holo-title {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--holo-cyan), var(--holo-violet), var(--holo-magenta));
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: var(--glow-cyan);
+  animation: pulse 3s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+.holo-card {
+  background: rgba(0,229,255,0.05);
+  border: 1px solid rgba(0,229,255,0.25);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-top: 3rem;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--glow-cyan);
+  max-width: 450px; width: 100%;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.holo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--glow-cyan), inset 0 0 20px rgba(0,229,255,0.1);
+}
+.holo-input {
+  width: 100%;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(0,229,255,0.35);
+  border-radius: 8px;
+  padding: 14px 18px;
+  color: #fff;
+  font-size: 1rem;
+  margin: 1rem 0;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+.holo-input:focus {
+  border-color: var(--holo-cyan);
+  box-shadow: var(--glow-cyan);
+}
+.holo-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem; font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--holo-cyan), var(--holo-violet));
+  color: #fff;
+  box-shadow: var(--glow-cyan);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.holo-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0,229,255,0.7);
+}
+.key-display {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(0,229,255,0.08);
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: var(--holo-cyan);
+  word-break: break-all;
+  display: none;
+}
+.expire-note {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #888;
+}
+.nav-links {
+  position: fixed;
+  top: 2rem; right: 2rem;
+  z-index: 10;
+}
+.nav-links a {
+  color: var(--holo-cyan);
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--holo-magenta); }
+</style>
 </head>
 <body>
-    <header>
-        <div class="brand">
-            <div class="brand-icon">🛡️</div>
-            <div class="brand-text">
-                <h3>KeyGuard Pro</h3>
-                <p>Secure • Fast • Direct</p>
-            </div>
-        </div>
 
-        <nav>
-            <a href="#" class="nav-item">📂 Tệp Tải</a>
-            <a href="#" class="nav-item">🔑 Lấy Khóa</a>
-            <a href="#" class="nav-item">🔗 Liên Kết</a>
-            <a href="#" class="nav-secure">🛡️ Bảo Vệ</a>
-            <a href="admin.html" class="nav-admin">⚙️ Quản Trị</a>
-        </nav>
-    </header>
+<canvas id="universe"></canvas>
+<div class="scanlines"></div>
 
-    <main>
-        <div class="status-badge">
-            <span class="status-dot"></span>
-            Tải Trực Tiếp — Hệ Thống Hoạt Động Bình Thường
-        </div>
+<nav class="nav-links">
+  <a href="#home">Trang chủ</a>
+  <a href="/admin">Admin Panel</a>
+</nav>
 
-        <h1>
-            Tải Tài Nguyên & <span class="text-gradient-1">Nhận Khóa</span><br>
-            <span class="text-gradient-2">Kích Hoạt An Toàn</span>
-        </h1>
+<div class="content">
+  <h1 class="holo-title">BRMOD UNIVERSE</h1>
+  <p style="color:#aaa; margin-top:0.5rem;">Hệ thống khóa kích hoạt — An toàn & Tốc độ</p>
 
-        <p class="lead">
-            Tải tệp, script và công cụ trực tiếp không cần chờ đợi. Chỉ khi yêu cầu khóa kích hoạt, hệ thống sẽ xác minh tự động và cung cấp key bảo mật — chống mọi dạng bỏ qua xác thực.
-        </p>
+  <div class="holo-card">
+    <h3>🔑 Nhận Key Kích Hoạt</h3>
+    <input type="text" id="userInput" class="holo-input" placeholder="Nhập Mã / Email / ID...">
+    <button class="holo-btn" onclick="requestKey()">Yêu Cầu Key</button>
+    <div id="keyBox" class="key-display">
+      <strong>Key của bạn:</strong><br>
+      <span id="keyValue"></span>
+      <p class="expire-note">Hết hạn: <span id="expireTime"></span></p>
+    </div>
+  </div>
+</div>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <div class="feature-title">Tải Không Giới Hạn</div>
-                <div class="feature-desc">Truy cập ngay tệp, không rút gọn link, không chờ đợi</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔐</div>
-                <div class="feature-title">Mã Hóa HMAC</div>
-                <div class="feature-desc">Chữ ký SHA-256 chống giả mạo & chỉnh sửa dữ liệu</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⏱️</div>
-                <div class="feature-title">Kiểm Soát Thời Gian</div>
-                <div class="feature-desc">Tự động vô hiệu hóa key khi hết hạn hoặc bị chia sẻ</div>
-            </div>
-        </div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.145.0/build/three.min.js"></script>
+<script>
+// === Hiệu ứng Vũ trụ 3D ===
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({canvas: document.getElementById('universe'), antialias: true, alpha: true});
+renderer.setSize(window.innerWidth, window.innerHeight);
 
-        <a href="admin.html" class="cta-button">
-            ⚙️ Truy Cập Bảng Điều Khiển
-        </a>
-    </main>
+const starCount = 2500;
+const geometry = new THREE.BufferGeometry();
+const positions = new Float32Array(starCount*3);
+const colors = new Float32Array(starCount*3);
+const palette = [
+  [0, 0.9, 1],
+  [0.55, 0.38, 0.96],
+  [1, 0, 0.9]
+];
+for(let i=0; i<starCount; i++){
+  const i3 = i*3;
+  const r = Math.random()*200 - 100;
+  const theta = Math.random()*Math.PI*2;
+  const phi = Math.acos((Math.random()*2)-1);
+  positions[i3] = r * Math.sin(phi) * Math.cos(theta);
+  positions[i3+1] = r * Math.sin(phi) * Math.sin(theta);
+  positions[i3+2] = r * Math.cos(phi);
+  const c = palette[Math.floor(Math.random()*palette.length)];
+  colors[i3] = c[0]; colors[i3+1] = c[1]; colors[i3+2] = c[2];
+}
+geometry.setAttribute('position', new THREE.BufferAttribute(positions,3));
+geometry.setAttribute('color', new THREE.BufferAttribute(colors,3));
+const material = new THREE.PointsMaterial({size: 0.6, vertexColors: true, transparent: true, opacity: 0.8});
+const stars = new THREE.Points(geometry, material);
+scene.add(stars);
+camera.position.z = 50;
+
+function animate(){
+  requestAnimationFrame(animate);
+  stars.rotation.y += 0.0003;
+  stars.rotation.x += 0.0001;
+  renderer.render(scene, camera);
+}
+animate();
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// === Yêu cầu Key ===
+async function requestKey(){
+  const input = document.getElementById('userInput').value.trim();
+  if(!input) return alert('Vui lòng nhập thông tin!');
+  
+  const res = await fetch('/api/get-key.php', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({input})
+  });
+  const data = await res.json();
+  
+  if(data.success){
+    document.getElementById('keyValue').textContent = data.key;
+    document.getElementById('expireTime').textContent = data.expire;
+    document.getElementById('keyBox').style.display = 'block';
+  }else{
+    alert(data.message || 'Lỗi hệ thống!');
+  }
+}
+</script>
 </body>
 </html>

@@ -1,83 +1,279 @@
-<!DOCTYPE html><html lang="vi"><head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Bảng Quản Trị Hệ Thống | KeyMaster Admin</title>
- <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f0ff'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z'/%3E%3C/svg%3E">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
- <link rel="stylesheet" href="https://brmodgetkey.onrender.com/css/admin.css">
- <style>
- :root {
-   --admin-bg: #020408;
-   --admin-card: rgba(10, 18, 40, 0.6);
-   --admin-card-strong: rgba(12, 22, 48, 0.75);
-   --admin-border: rgba(0, 240, 255, 0.15);
-   --admin-primary: #00f0ff;
-   --admin-purple: #9d4edd;
-   --admin-success: #10b981;
-   --admin-warning: #f59e0b;
-   --admin-danger: #ef4444;
-   --glow-admin: 0 0 20px rgba(0,240,255,0.35), 0 0 40px rgba(157,78,221,0.2);
-   --text-holo: linear-gradient(90deg, #00f0ff, #9d4edd, #3a86ff, #00f0ff);
- }
- body {
-   background: radial-gradient(circle at top left, #040812, #020408 50%, #030510);
-   min-height: 100vh;
- }
- .bg-ambient {
-   position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
- }
- .orb {
-   position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.25;
-   animation: orbFloat 25s ease-in-out infinite alternate;
- }
- .orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,240,255,0.2), transparent 70%); top: -150px; left: -100px; }
- .orb-2 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(157,78,221,0.18), transparent 70%); bottom: -200px; right: -100px; animation-delay: -8s; }
- @keyframes orbFloat {
-   0% { transform: translate(0, 0) scale(1); }
-   50% { transform: translate(40px, -30px) scale(1.1); }
-   100% { transform: translate(-30px, 40px) scale(0.95); }
- }
- .bg-grid {
-   position: fixed; inset: 0; z-index: 0;
-   background-image: linear-gradient(rgba(0,240,255,0.025) 1px, transparent 1px),
-     linear-gradient(90deg, rgba(0,240,255,0.025) 1px, transparent 1px);
-   background-size: 50px 50px; opacity: 0.35;
-   animation: gridMove 30s linear infinite; pointer-events: none;
- }
- @keyframes gridMove { 0% { transform: translate(0,0); } 100% { transform: translate(50px,50px); } }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Trị — KeyGuard Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        :root {
+            --bg-main: #050816;
+            --bg-card: #0f172a;
+            --bg-soft: #1e293b;
+            --accent-1: #f97316;
+            --accent-2: #ef4444;
+            --accent-3: #10b981;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: rgba(148, 163, 184, 0.15);
+            --input-bg: #0b1220;
+        }
+        body {
+            background: linear-gradient(145deg, #050816 0%, #0f172a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 0;
+        }
+        header {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .brand-text h3 {
+            font-size: 16px;
+        }
+        .brand-text p {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+        .back-link {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .back-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        main {
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 36px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .panel-header {
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-header h1 {
+            font-size: 22px;
+            color: var(--accent-1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .panel-header p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+        .form-group {
+            margin-bottom: 22px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #cbd5e1;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 13px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.25s;
+        }
+        input:focus, select:focus {
+            border-color: var(--accent-1);
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 540px) {
+            .row { grid-template-columns: 1fr; }
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent-1), #ea580c);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(249, 115, 22, 0.25);
+        }
+        .result-box {
+            margin-top: 28px;
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            display: none;
+        }
+        .result-box.visible {
+            display: block;
+        }
+        .result-box h4 {
+            color: #6ee7b7;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .key-display {
+            background: rgba(0,0,0,0.25);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 15px;
+            color: #86efac;
+            word-break: break-all;
+            margin-bottom: 10px;
+        }
+        .copy-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .copy-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <div class="brand-icon">⚙️</div>
+            <div class="brand-text">
+                <h3>Quản Trị Hệ Thống</h3>
+                <p>KeyGuard Pro — Bảng Điều Khiển</p>
+            </div>
+        </div>
+        <a href="index.html" class="back-link">← Quay Lại Trang Chủ</a>
+    </header>
 
- /* Login Screen */
- .login-screen {
-   background: linear-gradient(135deg, rgba(0,240,255,0.05), rgba(157,78,221,0.05));
-   backdrop-filter: blur(10px);
- }
- .login-card {
-   background: var(--admin-card);
-   backdrop-filter: blur(20px); border: 1px solid rgba(0,240,255,0.25);
-   border-radius: 24px; box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,240,255,0.15);
- }
- .login-icon {
-   background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(157,78,221,0.2));
-   border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;
-   margin: 0 auto 20px; font-size: 32px; color: var(--admin-primary);
-   box-shadow: 0 0 30px rgba(0,240,255,0.3);
- }
+    <main>
+        <div class="panel">
+            <div class="panel-header">
+                <h1>🔑 Tạo Khóa Truy Cập Mới</h1>
+                <p>Thiết lập thông số và tạo key cho người dùng</p>
+            </div>
 
- /* Sidebar */
- .admin-sidebar {
-   background: rgba(8, 12, 24, 0.7);
-   backdrop-filter: blur(20px); border-right: 1px solid rgba(0,240,255,0.1);
- }
- .sidebar-header {
-   border-bottom: 1px solid rgba(0,240,255,0.1); padding: 24px 20px;
- }
- .sidebar-header > div:first-child {
-   background: linear-gradient(135deg, var(--admin-primary), var(--admin-purple));
-   box-shadow: 0 0 15px rgba(0,240,255,0.3);
- }
- .sidebar-menu button {
-   transition: all 0.3s ease; border-radius: 10px; margin: 4px 12px;
- }
- .sidebar-menu button:hover {
-   background: rgba(0,240,255,0.08); color: #fff;
-   box-shadow: inset 0 0 0 1px rgba(0,
+            <form id="keyForm">
+                <div class="form-group">
+                    <label>Tên / Ghi chú nhận diện</label>
+                    <input type="text" id="note" placeholder="VD: Key cho mod game — Thành viên A" required>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Ngày hết hạn</label>
+                        <input type="date" id="expireDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Giới hạn sử dụng</label>
+                        <input type="number" id="limit" placeholder="Không giới hạn" min="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Quyền truy cập</label>
+                    <select id="role">
+                        <option value="basic">Cơ bản — Tải tệp & lấy key</option>
+                        <option value="premium">Nâng cao — Tất cả chức năng</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    ✅ Tạo Khóa Ngay
+                </button>
+            </form>
+
+            <div class="result-box" id="resultBox">
+                <h4>✅ Khóa đã được tạo thành công</h4>
+                <div class="key-display" id="keyDisplay">KG-XXXX-XXXX-XXXX</div>
+                <button class="copy-btn" onclick="copyKey()">📋 Sao Chép Khóa</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function generateKey() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let part1 = '', part2 = '', part3 = '';
+            for (let i=0; i<4; i++) {
+                part1 += chars[Math.floor(Math.random() * chars.length)];
+                part2 += chars[Math.floor(Math.random() * chars.length)];
+                part3 += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return `KG-${part1}-${part2}-${part3}`;
+        }
+
+        document.getElementById('keyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newKey = generateKey();
+            document.getElementById('keyDisplay').textContent = newKey;
+            document.getElementById('resultBox').classList.add('visible');
+        });
+
+        function copyKey() {
+            const keyText = document.getElementById('keyDisplay').textContent;
+            navigator.clipboard.writeText(keyText).then(() => {
+                alert('Đã sao chép khóa: ' + keyText);
+            });
+        }
+    </script>
+</body>
+</html>

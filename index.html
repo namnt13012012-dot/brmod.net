@@ -1,1 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRMOD UNIVERSE — Hệ Thống Key Chính Thức</title>
+<style>
+:root {
+  --holo-cyan: #00f0ff;
+  --holo-pink: #ff2df7;
+  --holo-purple: #9d4edd;
+  --holo-gold: #ffd000;
+  --bg-deep: #02040f;
+  --glow-cyan: 0 0 15px rgba(0,240,255,0.7), 0 0 50px rgba(0,240,255,0.3);
+  --glow-pink: 0 0 15px rgba(255,45,247,0.7), 0 0 50px rgba(255,45,247,0.3);
+  --glow-gold: 0 0 15px rgba(255,208,0,0.6), 0 0 40px rgba(255,208,0,0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+body { background: var(--bg-deep); color: #fff; overflow-x: hidden; }
 
+/* === NỀN VŨ TRỤ 3D === */
+#galaxy {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0;
+  background: radial-gradient(ellipse at top, #1a1042 0%, #02040f 60%, #000 100%);
+}
+.star-layer {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(0,240,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(2px 2px at 130px 80px, rgba(255,45,247,0.7), transparent),
+    radial-gradient(1px 1px at 160px 120px, #fff, transparent),
+    radial-gradient(2px 2px at 200px 50px, rgba(255,208,0,0.6), transparent);
+  background-repeat: repeat;
+  background-size: 250px 250px;
+  animation: twinkle 8s ease-in-out infinite;
+}
+.star-layer:nth-child(2) { animation-delay: -2s; opacity: 0.7; }
+.star-layer:nth-child(3) { animation-delay: -4s; opacity: 0.5; }
+@keyframes twinkle {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+.scanlines {
+  position: fixed; inset: 0; pointer-events: none; z-index: 2;
+  background: repeating-linear-gradient(transparent, transparent 2px, rgba(0,240,255,0.02) 2px, rgba(0,240,255,0.02) 4px);
+}
+
+/* === NỘI DUNG === */
+.content { position: relative; z-index: 3; min-height: 100vh; padding: 2rem; }
+.nav-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem 3rem; backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,240,255,0.15);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(2,4,15,0.7);
+}
+.nav-logo {
+  font-size: 1.5rem; font-weight: 800;
+  background: linear-gradient(90deg, var(--holo-cyan), var(--holo-pink));
+  -webkit-background-clip: text; color: transparent;
+}
+.nav-links a {
+  color: #ccc; text-decoration: none; margin-left: 2rem; font-weight: 500;
+  transition: all 0.3s;
+}
+.nav-links a:hover { color: var(--holo-cyan); text-shadow: 0 0 10px var(--holo-cyan); }
+.nav-links a.admin-link { color: var(--holo-gold); }
+.nav-links a.admin-link:hover { color: #fff; text-shadow: var(--glow-gold); }
+
+.hero {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding-top: 10px; min-height: 100vh; text-align: center;
+}
+.main-title {
+  font-size: clamp(2.8rem, 8vw, 5rem); font-weight: 900; letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--holo-cyan), var(--holo-purple), var(--holo-pink));
+  -webkit-background-clip: text; color: transparent;
+  margin-bottom: 1rem; animation: titleGlow 3s ease-in-out infinite;
+}
+@keyframes titleGlow {
+  0%,100% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.4)); }
+  50% { filter: drop-shadow(0 0 30px rgba(255,45,247,0.5)); }
+}
+.subtitle { color: #999; font-size: 1.2rem; margin-bottom: 3rem; max-width: 600px; }
+
+/* === Ô NÚT CHÍNH === */
+.action-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 900px; width: 100%; margin-top: 2rem; }
+.action-card {
+  background: rgba(0,240,255,0.03); border: 1px solid rgba(0,240,255,0.2);
+  border-radius: 20px; padding: 2.5rem; cursor: pointer;
+  backdrop-filter: blur(12px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative; overflow: hidden;
+}
+.action-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(255,45,247,0.1));
+  opacity: 0; transition: opacity 0.3s;
+}
+.action-card:hover::before { opacity: 1; }
+.action-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  border-color: var(--holo-cyan); box-shadow: var(--glow-cyan);
+}
+.action-card.secondary:hover { border-color: var(--holo-pink); box-shadow: var(--glow-pink); }
+.action-card.gold:hover { border-color: var(--holo-gold); box-shadow: var(--glow-gold); }
+.card-icon { font-size: 3rem; margin-bottom: 1rem; }
+.card-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+.card-desc { color: #888; font-size: 0.95rem; line-height: 1.5; }
+
+/* === HƯỚNG DẪN === */
+.guide-section { max-width: 800px; margin: 4rem auto; padding: 0 2rem; }
+.guide-title { text-align: center; font-size: 1.8rem; margin-bottom: 2rem; color: var(--holo-cyan); }
+.step-box {
+  background: rgba(0,0,0,0.3); border-left: 3px solid var(--holo-cyan);
+  padding: 1.5rem; margin-bottom: 1rem; border-radius: 0 12px 12px 0;
+  transition: all 0.3s;
+}
+.step-box:hover { background: rgba(0,240,255,0.05); border-left-width: 5px; padding-left: 1.8rem; }
+.step-num { display: inline-block; width: 30px; height: 30px; line-height: 30px; text-align: center; background: linear-gradient(135deg, var(--holo-cyan), var(--holo-purple)); border-radius: 50%; font-weight: bold; margin-right: 10px; }
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .nav-bar { padding: 1rem; }
+  .nav-links a { margin-left: 1rem; }
+  .action-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="galaxy">
+  <div class="star-layer"></div>
+  <div class="star-layer"></div>
+  <div class="star-layer"></div>
+</div>
+<div class="scanlines"></div>
+
+<div class="content">
+  <nav class="nav-bar">
+    <div class="nav-logo">⚡ BRMOD UNIVERSE</div>
+    <div class="nav-links">
+      <a href="#home">Trang Chủ</a>
+      <a href="#guide">Hướng Dẫn</a>
+      <a href="admin/" class="admin-link">🔐 Quản Lý</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="home">
+    <h1 class="main-title">VŨ TRỤ BRMOD</h1>
+    <p class="subtitle">Hệ thống cấp khóa kích hoạt tự động — An toàn, Nhanh chóng, Bảo mật</p>
+    
+    <div class="action-grid">
+      <!-- Ô 1: Nhận Key -->
+      <div class="action-card" onclick="goGetKey()">
+        <div class="card-icon">🔑</div>
+        <h3 class="card-title">Nhận Key Kích Hoạt</h3>
+        <p class="card-desc">Bấm vào đây để bắt đầu quá trình nhận key. Hoàn thành bước xác nhận là có key ngay!</p>
+      </div>
+      
+      <!-- Ô 2: Kiểm tra Key -->
+      <div class="action-card secondary" onclick="scrollToGuide()">
+        <div class="card-icon">📋</div>
+        <h3 class="card-title">Hướng Dẫn Sử Dụng</h3>
+        <p class="card-desc">Xem chi tiết các bước lấy key, cách kích hoạt và giải đáp thắc mắc.</p>
+      </div>
+      
+      <!-- Ô 3: Kiểm tra trạng thái -->
+      <div class="action-card gold" onclick="window.location.href='verify.html'">
+        <div class="card-icon">✅</div>
+        <h3 class="card-title">Đã Vượt Link?</h3>
+        <p class="card-desc">Nếu đã hoàn thành bước vượt link, bấm vào đây để nhận key ngay!</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-section" id="guide">
+    <h2 class="guide-title">📖 Hướng Dẫn Chi Tiết</h2>
+    
+    <div class="step-box">
+      <span class="step-num">1</span>
+      <strong>Bấm ô "Nhận Key Kích Hoạt"</strong><br>
+      Hệ thống sẽ tự động chuyển bạn đến trang vượt link Link4M
+    </div>
+    
+    <div class="step-box">
+      <span class="step-num">2</span>
+      <strong>Hoàn thành vượt link Link4M</strong><br>
+      Đợi đếm ngược → Bấm "Tiếp tục" → Bấm "Truy cập" cho đến khi hiện thông báo thành công
+    </div>
+    
+    <div class="step-box">
+      <span class="step-num">3</span>
+      <strong>Chuyển sang trang xác nhận</strong><br>
+      Sau khi vượt xong, bạn sẽ được tự động chuyển về trang xác nhận của BRMOD
+    </div>
+    
+    <div class="step-box">
+      <span class="step-num">4</span>
+      <strong>Nhận Key tự động</strong><br>
+      Hệ thống kiểm tra và cấp key ngay nếu hợp lệ → Sao chép key và kích hoạt
+    </div>
+    
+    <div class="step-box" style="border-color: var(--holo-gold);">
+      <span class="step-num">🔐</span>
+      <strong>Dành cho Admin — Không cần vượt link!</strong><br>
+      Truy cập trực tiếp: <code style="color:var(--holo-gold);">brmod.net/admin/</code> → Đăng nhập → Tạo key ngay
+    </div>
+  </section>
+</div>
+
+<script>
+// === Chuyển đến trang vượt link ===
+function goGetKey() {
+  // Thay link bên dưới bằng link Link4M thực của bạn
+  const link4mUrl = "https://link4m.co/xxxxxx"; 
+  window.location.href = link4mUrl;
+}
+
+// === Cuộn đến hướng dẫn ===
+function scrollToGuide() {
+  document.getElementById('guide').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

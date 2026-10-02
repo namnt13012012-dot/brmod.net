@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xác Nhận — BRMOD UNIVERSE</title>
+<style>
+:root {
+  --holo-cyan: #00f0ff;
+  --holo-green: #00ff88;
+  --holo-red: #ff3860;
+  --bg-deep: #02040f;
+  --glow-cyan: 0 0 15px rgba(0,240,255,0.7), 0 0 50px rgba(0,240,255,0.3);
+  --glow-green: 0 0 15px rgba(0,255,136,0.7), 0 0 50px rgba(0,255,136,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body {
+  background: radial-gradient(ellipse at top, #102040 0%, var(--bg-deep) 60%);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  color: #fff; padding: 2rem;
+}
+.container {
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(0,240,255,0.25);
+  border-radius: 24px; padding: 3rem; max-width: 500px; width: 100%;
+  backdrop-filter: blur(15px); box-shadow: var(--glow-cyan); text-align: center;
+  animation: fadeIn 0.6s ease-out;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.icon { font-size: 4rem; margin-bottom: 1rem; }
+h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.desc { color: #aaa; margin-bottom: 2rem; }
+.key-box {
+  background: rgba(0,240,255,0.08); border: 1px solid var(--holo-cyan);
+  border-radius: 12px; padding: 1.5rem; font-family: monospace; font-size: 1.3rem;
+  color: var(--holo-cyan); margin: 1.5rem 0; word-break: break-all; display: none;
+  box-shadow: inset 0 0 20px rgba(0,240,255,0.1);
+}
+.key-box.show { display: block; animation: popIn 0.4s ease-out; }
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.expire-note { margin-top: 0.8rem; font-size: 0.9rem; color: #888; }
+.btn {
+  width: 100%; padding: 14px; border-radius: 10px; border: none;
+  font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-top: 0.8rem;
+}
+.btn-primary { background: linear-gradient(135deg, var(--holo-cyan), #4facf4); color: #000; }
+.btn-primary:hover { transform: scale(1.03); box-shadow: var(--glow-cyan); }
+.btn-success { background: linear-gradient(135deg, var(--holo-green), #00cc6a); color: #000; }
+.btn-copy { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+.loading { color: var(--holo-cyan); }
+.error-box { border-color: var(--holo-red); display: none; }
+.error-box.show { display: block; border-color: var(--holo-red); }
+.back-link { display: inline-block; margin-top: 2rem; color: #888; text-decoration: none; transition: color 0.3s; }
+.back-link:hover { color: var(--holo-cyan); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="loadingState">
+    <div class="icon">⏳</div>
+    <h1>Đang xác nhận...</h1>
+    <p class="desc">Kiểm tra trạng thái vượt link, vui lòng chờ</p>
+  </div>
+
+  <div id="successState" style="display:none;">
+    <div class="icon">✅</div>
+    <h1>Xác Nhận Thành Công!</h1>
+    <p class="desc">Chúc mừng — bạn đã hoàn thành bước vượt link. Key của bạn đã sẵn sàng:</p>
+    
+    <div id="keyBox" class="key-box">
+      <strong>🔑 Key Kích Hoạt:</strong><br>
+      <span id="keyValue"></span>
+      <p class="expire-note">📅 Hết hạn: <span id="expireTime"></span></p>
+    </div>
+    
+    <button class="btn btn-copy" onclick="copyKey()">📋 Sao Chép Key</button>
+    <button class="btn btn-primary" onclick="window.location.href='index.html'">🏠 Về Trang Chủ</button>
+  </div>
+
+  <div id="errorState" class="error-box key-box">
+    <div class="icon">❌</div>
+    <h1>Chưa Xác Nhận</h1>
+    <p class="desc" id="errorMsg">Bạn chưa hoàn thành bước vượt link Link4M.</p>
+    <button class="btn btn-primary" onclick="goToLink4M()">🔗 Đi Vượt Link Ngay</button>
+    <button class="btn btn-copy" onclick="window.location.href='index.html'">🏠 Về Trang Chủ</button>
+  </div>
+
+  <a href="index.html" class="back-link">← Quay lại trang chủ</a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  checkVerification();
+});
+
+async function checkVerification() {
+  // Gọi API kiểm tra và cấp key
+  try {
+    const res = await fetch('api/get-key.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'claim' })
+    });
+    
+    const data = await res.json();
+    
+    if (data.success) {
+      // Thành công — hiển thị key
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('successState').style.display = 'block';
+      document.getElementById('keyValue').textContent = data.key;
+      document.getElementById('expireTime').textContent = data.expire;
+      document.getElementById('keyBox').classList.add('show');
+    } else {
+      // Thất bại
+      showError(data.message || 'Vui lòng hoàn thành bước vượt link trước!');
+    }
+  } catch (err) {
+    showError('Lỗi kết nối hệ thống. Thử lại sau!');
+  }
+}
+
+function showError(msg) {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('errorState').style.display = 'block';
+  document.getElementById('errorMsg').textContent = msg;
+  document.getElementById('errorState').classList.add('show');
+}
+
+function copyKey() {
+  const key = document.getElementById('keyValue').textContent;
+  navigator.clipboard.writeText(key).then(() => {
+    alert('✅ Đã sao chép key thành công!');
+  });
+}
+
+function goToLink4M() {
+  // Thay link bên dưới bằng link Link4M thực của bạn
+  window.location.href = "https://link4m.co/xxxxxx";
+}
+</script>
+</body>
+</html>

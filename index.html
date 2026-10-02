@@ -1,576 +1,275 @@
-<!DOCTYPE html><html lang="vi"><head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <meta name="referrer" content="strict-origin-when-cross-origin">
- <title>Get Key & Tải File | Keymaster PRO</title>
- <meta name="description" content="Hệ thống chia sẻ file và cấp key bản quyền tích hợp Link4M với cơ chế bảo vệ Anti-Bypass HMAC-SHA256.">
- <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f0ff'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-1 6h2v2h-2V7zm0 4h2v6h-2v-6z'/%3E%3C/svg%3E">
- <link rel="manifest" href="https://brmodgetkey.onrender.com/manifest.json">
- <meta name="theme-color" content="#00f0ff">
- <meta name="mobile-web-app-capable" content="yes">
- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
- <link rel="stylesheet" href="https://brmodgetkey.onrender.com/css/style.css?v=3.0">
- <style>
- /* ===== BIẾN NÂNG CẤP HOLOGRAM ===== */
- :root {
-   --bg-primary: #020408;
-   --bg-secondary: rgba(8, 12, 24, 0.85);
-   --bg-card: rgba(10, 18, 40, 0.55);
-   --bg-card-strong: rgba(12, 22, 48, 0.7);
-   --border-holo: linear-gradient(135deg, rgba(0,240,255,0.6), rgba(157,78,221,0.6), rgba(58,134,255,0.6), rgba(16,185,129,0.6));
-   --glow-cyan: 0 0 20px rgba(0,240,255,0.6), 0 0 40px rgba(0,240,255,0.3), inset 0 0 20px rgba(0,240,255,0.08);
-   --glow-purple: 0 0 20px rgba(157,78,221,0.5), 0 0 40px rgba(157,78,221,0.25);
-   --glow-mix: 0 0 25px rgba(0,240,255,0.4), 0 0 50px rgba(157,78,221,0.25);
-   --text-holo: linear-gradient(90deg, #00f0ff, #9d4edd, #3a86ff, #10b981, #00f0ff);
-   --glass-bg: rgba(10, 14, 30, 0.6);
-   --glass-border: rgba(0, 240, 255, 0.18);
-   --radius-xl: 24px;
-   --radius-pill: 9999px;
- }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyGuard Pro — Tải Tệp & Khóa Kích Hoạt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        :root {
+            --bg-main: #050816;
+            --bg-card: #0f172a;
+            --bg-soft: #1e293b;
+            --accent-1: #06b6d4;
+            --accent-2: #8b5cf6;
+            --accent-3: #10b981;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: rgba(148, 163, 184, 0.15);
+        }
+        body {
+            background: linear-gradient(135deg, var(--bg-main) 0%, #0c1a2f 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 0;
+        }
+        /* Header */
+        header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.25);
+        }
+        .brand-text h3 {
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+        .brand-text p {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        nav a {
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-item {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+        }
+        .nav-item:hover {
+            background: rgba(6, 182, 212, 0.08);
+            color: var(--accent-1);
+            border-color: rgba(6, 182, 212, 0.2);
+        }
+        .nav-secure {
+            background: rgba(139, 92, 246, 0.12);
+            color: #c4b5fd;
+        }
+        .nav-secure:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+        .nav-admin {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+        }
+        .nav-admin:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+        }
+        /* Hero Section */
+        main {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            margin-bottom: 36px;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        h1 {
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            line-height: 1.15;
+            margin-bottom: 24px;
+        }
+        .text-gradient-1 {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-2 {
+            background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .lead {
+            color: var(--text-secondary);
+            font-size: 17px;
+            max-width: 680px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            text-align: left;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(6, 182, 212, 0.25);
+        }
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .feature-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
+            color: white;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 6px 24px rgba(139, 92, 246, 0.25);
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.35);
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <div class="brand-icon">🛡️</div>
+            <div class="brand-text">
+                <h3>KeyGuard Pro</h3>
+                <p>Secure • Fast • Direct</p>
+            </div>
+        </div>
 
- /* ===== NỀN HOLOGRAM ĐỘNG ===== */
- body {
-   background: radial-gradient(circle at top left, #040812, #020408 50%, #030510);
-   min-height: 100vh;
-   overflow-x: hidden;
- }
+        <nav>
+            <a href="#" class="nav-item">📂 Tệp Tải</a>
+            <a href="#" class="nav-item">🔑 Lấy Khóa</a>
+            <a href="#" class="nav-item">🔗 Liên Kết</a>
+            <a href="#" class="nav-secure">🛡️ Bảo Vệ</a>
+            <a href="admin.html" class="nav-admin">⚙️ Quản Trị</a>
+        </nav>
+    </header>
 
- .bg-ambient {
-   position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
- }
- .orb {
-   position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.3;
-   animation: orbFloat 25s ease-in-out infinite alternate;
- }
- .orb-1 {
-   width: 600px; height: 600px;
-   background: radial-gradient(circle, rgba(0,240,255,0.25), transparent 70%);
-   top: -200px; left: -150px;
- }
- .orb-2 {
-   width: 700px; height: 700px;
-   background: radial-gradient(circle, rgba(157,78,221,0.2), transparent 70%);
-   bottom: -250px; right: -150px; animation-delay: -8s;
- }
- .orb-3 {
-   width: 500px; height: 500px;
-   background: radial-gradient(circle, rgba(58,134,255,0.18), transparent 70%);
-   top: 30%; left: 40%; animation-delay: -14s;
- }
- .orb-4 {
-   width: 400px; height: 400px;
-   background: radial-gradient(circle, rgba(16,185,129,0.15), transparent 70%);
-   bottom: 20%; left: 10%; animation-delay: -5s;
- }
- @keyframes orbFloat {
-   0% { transform: translate(0, 0) scale(1); }
-   33% { transform: translate(50px, -40px) scale(1.1); }
-   66% { transform: translate(-30px, 50px) scale(0.95); }
-   100% { transform: translate(40px, 30px) scale(1.05); }
- }
+    <main>
+        <div class="status-badge">
+            <span class="status-dot"></span>
+            Tải Trực Tiếp — Hệ Thống Hoạt Động Bình Thường
+        </div>
 
- /* ===== LƯỚI LỬA ĐỘNG NỀN ===== */
- .bg-grid {
-   position: fixed; inset: 0; z-index: 0;
-   background-image: 
-     linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
-     linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
-   background-size: 60px 60px;
-   opacity: 0.4;
-   animation: gridMove 30s linear infinite;
-   pointer-events: none;
- }
- @keyframes gridMove {
-   0% { transform: translate(0, 0); }
-   100% { transform: translate(60px, 60px); }
- }
+        <h1>
+            Tải Tài Nguyên & <span class="text-gradient-1">Nhận Khóa</span><br>
+            <span class="text-gradient-2">Kích Hoạt An Toàn</span>
+        </h1>
 
- /* ===== NAVBAR HOLOGRAM ===== */
- .navbar {
-   background: var(--glass-bg);
-   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-   border: 1px solid var(--glass-border);
-   border-radius: 0 0 24px 24px;
-   padding: 20px 32px; margin-bottom: 48px;
-   box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,240,255,0.05) inset;
-   position: sticky; top: 0; z-index: 100;
- }
- .brand-icon {
-   background: linear-gradient(135deg, #00f0ff, #9d4edd, #3a86ff);
-   background-size: 200% 200%;
-   animation: brandGrad 4s ease infinite;
-   box-shadow: var(--glow-mix);
- }
- @keyframes brandGrad {
-   0% { background-position: 0% 50%; }
-   50% { background-position: 100% 50%; }
-   100% { background-position: 0% 50%; }
- }
- .brand-text h1 {
-   background: var(--text-holo);
-   background-size: 300% 300%;
-   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-   animation: textHolo 6s linear infinite;
- }
- @keyframes textHolo {
-   0% { background-position: 0% 50%; }
-   100% { background-position: 300% 50%; }
- }
- .nav-links {
-   background: rgba(10, 20, 45, 0.5);
-   border: 1px solid rgba(0,240,255,0.15);
-   backdrop-filter: blur(16px); border-radius: 9999px; padding: 8px;
-   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
- }
- .nav-item {
-   border-radius: 9999px; transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
- }
- .nav-item:hover {
-   background: rgba(0,240,255,0.08); color: #fff;
-   box-shadow: 0 0 12px rgba(0,240,255,0.15);
- }
- .nav-item.active {
-   background: linear-gradient(135deg, rgba(0,240,255,0.25), rgba(157,78,221,0.25));
-   border: 1px solid rgba(0,240,255,0.4);
-   box-shadow: 0 0 20px rgba(0,240,255,0.25), inset 0 0 12px rgba(0,240,255,0.08);
-   color: #fff;
- }
+        <p class="lead">
+            Tải tệp, script và công cụ trực tiếp không cần chờ đợi. Chỉ khi yêu cầu khóa kích hoạt, hệ thống sẽ xác minh tự động và cung cấp key bảo mật — chống mọi dạng bỏ qua xác thực.
+        </p>
 
- /* ===== HERO SECTION ===== */
- .hero-section {
-   position: relative; padding: 60px 20px 80px;
- }
- .hero-pill {
-   background: rgba(16,185,129,0.1);
-   border: 1px solid rgba(16,185,129,0.3);
-   backdrop-filter: blur(10px); border-radius: 9999px; padding: 8px 20px;
-   box-shadow: 0 0 15px rgba(16,185,129,0.15);
- }
- .hero-title {
-   font-size: clamp(32px, 6vw, 52px); font-weight: 800; line-height: 1.15;
-   margin-bottom: 20px;
- }
- .hero-gradient {
-   background: var(--text-holo);
-   background-size: 300% 300%;
-   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-   animation: textHolo 8s linear infinite;
-   filter: drop-shadow(0 0 8px rgba(0,240,255,0.4));
- }
- .hero-metrics {
-   gap: 24px; margin-top: 32px;
- }
- .metric-item {
-   background: rgba(15, 23, 42, 0.5);
-   border: 1px solid rgba(255,255,255,0.08);
-   border-radius: 12px; padding: 12px 20px;
-   backdrop-filter: blur(8px); transition: all 0.3s ease;
- }
- .metric-item:hover {
-   border-color: rgba(0,240,255,0.3); transform: translateY(-2px);
-   box-shadow: 0 8px 24px rgba(0,0,0,0.3), 0 0 15px rgba(0,240,255,0.1);
- }
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Tải Không Giới Hạn</div>
+                <div class="feature-desc">Truy cập ngay tệp, không rút gọn link, không chờ đợi</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <div class="feature-title">Mã Hóa HMAC</div>
+                <div class="feature-desc">Chữ ký SHA-256 chống giả mạo & chỉnh sửa dữ liệu</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⏱️</div>
+                <div class="feature-title">Kiểm Soát Thời Gian</div>
+                <div class="feature-desc">Tự động vô hiệu hóa key khi hết hạn hoặc bị chia sẻ</div>
+            </div>
+        </div>
 
- /* ===== CARD FILE HOLOGRAM ===== */
- .file-card {
-   background: var(--bg-card);
-   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-   border-radius: 20px; border: 1px solid rgba(0,240,255,0.12);
-   position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
- }
- .file-card::before {
-   content: ''; position: absolute; inset: -100% 0 0 -100%;
-   background: linear-gradient(90deg, transparent, rgba(0,240,255,0.08), transparent);
-   transform: rotate(30deg); transition: all 0.6s ease; opacity: 0;
- }
- .file-card:hover {
-   border-color: rgba(0,240,255,0.4); transform: translateY(-6px) scale(1.01);
-   box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(0,240,255,0.15), inset 0 0 0 1px rgba(0,240,255,0.1);
- }
- .file-card:hover::before {
-   inset: 100% 0 0 100%; opacity: 1;
- }
- .file-icon {
-   background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(157,78,221,0.15));
-   border: 1px solid rgba(0,240,255,0.25);
-   box-shadow: 0 0 15px rgba(0,240,255,0.1);
- }
-
- /* ===== NÚT HOLOGRAM ===== */
- .btn-getkey-main {
-   background: linear-gradient(135deg, #00f0ff, #9d4edd, #3a86ff);
-   background-size: 200% 200%;
-   animation: btnHolo 4s ease infinite;
-   border-radius: 9999px; border: none; padding: 18px 48px;
-   font-size: 17px; font-weight: 700; color: #fff; cursor: pointer;
-   box-shadow: 0 0 30px rgba(0,240,255,0.4), 0 0 60px rgba(157,78,221,0.25);
-   transition: all 0.3s ease;
-   position: relative; overflow: hidden;
- }
- @keyframes btnHolo {
-   0% { background-position: 0% 50%; }
-   50% { background-position: 100% 50%; }
-   100% { background-position: 0% 50%; }
- }
- .btn-getkey-main:hover {
-   transform: scale(1.05);
-   box-shadow: 0 0 40px rgba(0,240,255,0.5), 0 0 80px rgba(157,78,221,0.35);
- }
- .btn-download {
-   background: linear-gradient(135deg, #00f0ff, #3a86ff);
-   border-radius: 10px; border: none; font-weight: 700;
-   box-shadow: 0 0 12px rgba(0,240,255,0.2); transition: all 0.25s ease;
- }
- .btn-download:hover {
-   transform: translateY(-1px); filter: brightness(1.15);
-   box-shadow: 0 0 20px rgba(0,240,255,0.35);
- }
-
- /* ===== GETKEY CARD HOLOGRAM ===== */
- .getkey-card {
-   background: var(--bg-card);
-   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-   border-radius: 24px; border: 1px solid rgba(0,240,255,0.2);
-   box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,240,255,0.1), inset 0 0 40px rgba(0,240,255,0.03);
-   position: relative; overflow: hidden;
- }
- .getkey-card::before, .getkey-card::after {
-   content: ''; position: absolute; width: 200%; height: 200%;
-   top: -50%; left: -50%;
-   background: conic-gradient(from 0deg, transparent, rgba(0,240,255,0.08), transparent, rgba(157,78,221,0.08), transparent);
-   animation: borderSpin 10s linear infinite; pointer-events: none;
- }
- .getkey-card::before { animation-delay: -5s; opacity: 0.5; }
- @keyframes borderSpin {
-   0% { transform: rotate(0deg); }
-   100% { transform: rotate(360deg); }
- }
- .getkey-card > * { position: relative; z-index: 1; }
- .key-glow-icon {
-   background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(157,78,221,0.2));
-   border: 2px solid rgba(0,240,255,0.4);
-   box-shadow: 0 0 30px rgba(0,240,255,0.3), inset 0 0 20px rgba(0,240,255,0.1);
-   animation: keyFloat 3s ease-in-out infinite alternate;
- }
- @keyframes keyFloat {
-   0% { transform: translateY(0) rotate(0deg); }
-   100% { transform: translateY(-10px) rotate(3deg); }
- }
-
- /* ===== MODAL HOLOGRAM ===== */
- .modal-overlay {
-   background: rgba(4, 6, 15, 0.75); backdrop-filter: blur(12px);
- }
- .modal-box {
-   background: var(--bg-card-strong);
-   backdrop-filter: blur(20px); border: 1px solid rgba(0,240,255,0.25);
-   border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(0,240,255,0.1);
- }
-
- /* ===== INPUT HOLOGRAM ===== */
- .search-input, .form-control, .auth-input {
-   background: rgba(10, 18, 40, 0.6);
-   border: 1px solid rgba(0,240,255,0.15);
-   border-radius: 12px; color: #fff;
-   transition: all 0.3s ease;
- }
- .search-input:focus, .form-control:focus, .auth-input:focus {
-   border-color: rgba(0,240,255,0.5);
-   box-shadow: 0 0 20px rgba(0,240,255,0.2), inset 0 0 10px rgba(0,240,255,0.05);
-   outline: none;
- }
-
- /* ===== RESPONSIVE ===== */
- @media (max-width: 768px) {
-   .navbar { padding: 16px 20px; border-radius: 0 0 20px 20px; }
-   .files-grid { grid-template-columns: 1fr; }
-   .hero-title { font-size: 32px; }
- }
- </style>
-</head><body>
-<!-- Nền Hologram -->
-<div class="bg-ambient">
- <div class="orb orb-1"></div>
- <div class="orb orb-2"></div>
- <div class="orb orb-3"></div>
- <div class="orb orb-4"></div>
-</div>
-<div class="bg-grid"></div>
-
-<div class="app-wrapper">
- <!-- Thanh điều hướng -->
- <header class="navbar">
- <a href="https://brmodgetkey.onrender.com/" class="brand">
- <div class="brand-icon">
- <i class="fa-solid fa-bolt-lightning"></i>
- </div>
- <div class="brand-text">
- <h1>KEYMASTER <span style="color: var(--accent-cyan);">PRO</span></h1>
- <span class="brand-badge"><i class="fa-solid fa-shield-halved"></i> ANTI-BYPASS HMAC</span>
- </div>
- </a>
- <nav class="nav-links">
- <button class="nav-item active" data-tab="files">
- <i class="fa-solid fa-box-archive"></i> Tệp Tin
- </button>
- <button class="nav-item" data-tab="getkey">
- <i class="fa-solid fa-key"></i> Lấy Khóa
- </button>
- <button class="nav-item" data-tab="videos">
- <i class="fa-brands fa-youtube" style="color: #ff3344;"></i> Video Hướng Dẫn
- </button>
- <button class="nav-item" data-tab="checkkey">
- <i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra Key
- </button>
- <button class="nav-item" data-tab="vault">
- <i class="fa-solid fa-vault"></i> Két Khóa <span id="vault-nav-badge" class="vault-nav-badge" style="display: none;">0</span>
- </button>
- <button class="nav-item" data-tab="about">
- <i class="fa-solid fa-shield-virus"></i> Bảo Mật
- </button>
- </nav>
- <div style="display: flex; align-items: center; gap: 10px;">
- <button type="button" id="btn-pwa-install" class="pwa-install-btn" style="display: none;" onclick="triggerPwaInstall()">
- <i class="fa-solid fa-mobile-screen-button"></i> <span>Cài App</span>
- </button>
- <a id="nav-youtube-btn" href="https://www.youtube.com/@quocthaipc" target="_blank" class="yt-header-btn" title="Kênh YouTube Quốc Thái PC">
- <i class="fa-brands fa-youtube"></i> <span>Quốc Thái PC</span>
- </a>
- <a href="https://brmodgetkey.onrender.com/admin" class="admin-link">
- <i class="fa-solid fa-user-shield"></i> Quản Trị
- </a>
- <div id="nav-user-container" class="nav-user-container">
- <div id="guest-auth-buttons" style="display: flex; align-items: center; gap: 8px;">
- <button type="button" id="btn-nav-login" class="btn-nav-auth" onclick="openAuthModal('login')">
- <i class="fa-solid fa-right-to-bracket"></i> <span>Đăng Nhập</span>
- </button>
- <button type="button" id="btn-nav-register" class="btn-nav-register" onclick="openAuthModal('register')">
- <i class="fa-solid fa-user-plus"></i> <span>Đăng Ký</span>
- </button>
- </div>
- <div id="user-profile-wrapper" class="user-profile-wrapper" style="display: none;">
- <button type="button" id="btn-user-profile" class="btn-user-badge" onclick="toggleUserDropdown(event)">
- <div class="user-badge-avatar"><i class="fa-solid fa-user-check"></i></div>
- <span id="nav-username" class="user-badge-name">Thành viên</span>
- <i class="fa-solid fa-chevron-down user-badge-arrow"></i>
- </button>
- <div id="user-dropdown-menu" class="user-dropdown-menu">
- <div class="dropdown-header">
- <div class="dropdown-name" id="dropdown-username">Tài khoản</div>
- <div class="dropdown-badge"><i class="fa-solid fa-circle-check"></i> Đã Kích Hoạt Quyền Tải & Get Key</div>
- </div>
- <div class="dropdown-divider"></div>
- <button type="button" class="dropdown-item" onclick="openUserHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i> Lịch Sử Key & Tải File</button>
- <button type="button" class="dropdown-item" onclick="openKeyGuideModal(); closeUserDropdown();"><i class="fa-solid fa-book-open"></i> Hướng Dẫn Dán Key Vào Game</button>
- <button type="button" class="dropdown-item" onclick="switchTab('vault'); closeUserDropdown();"><i class="fa-solid fa-vault"></i> Két Khóa Thông Minh</button>
- <button type="button" class="dropdown-item" onclick="openChangePasswordModal()"><i class="fa-solid fa-key"></i> Đổi Mật Khẩu</button>
- <div class="dropdown-divider"></div>
- <button type="button" class="dropdown-item text-danger" onclick="handleUserLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Đăng Xuất</button>
- </div>
- </div>
- </div>
- </div>
- </header>
-
- <!-- Thông báo, sự kiện, hero, tabs... -->
- <!-- Giữ nguyên toàn bộ nội dung phần thân của bạn từ đây -->
- <div id="system-announcement-banner" class="announcement-banner info" style="display: none;">
- <div class="announcement-content">
- <span class="announcement-icon" id="announcement-icon"><i class="fa-solid fa-bullhorn"></i></span>
- <span class="announcement-text" id="announcement-text"></span>
- <a id="announcement-link" href="https://brmodgetkey.onrender.com/#" target="_blank" class="announcement-link" style="display: none;">Xem chi tiết <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
- </div>
- <button type="button" class="announcement-close" onclick="dismissAnnouncement()" title="Đóng thông báo"><i class="fa-solid fa-xmark"></i></button>
- </div>
-
- <div id="event-banner" class="event-banner" style="display: none;">
- <div class="event-content">
- <span class="event-tag" id="event-badge">SỰ KIỆN HOT</span>
- <span class="event-text" id="event-banner-text">🔥 Đang diễn ra sự kiện Kênh YouTube Quốc Thái PC</span>
- <span id="event-perk-badge" class="event-perk-badge" style="display: none;">⚡ Giờ Vàng 1 Bước</span>
- <span id="event-countdown-box" class="event-countdown-chip" style="display: none;"><i class="fa-regular fa-clock"></i> <span id="event-countdown-text">Đang tính...</span></span>
- </div>
- <div class="event-actions">
- <button class="btn-event-giftcode" onclick="openGiftcodeModal()"><i class="fa-solid fa-gift"></i> Nhập Giftcode</button>
- <a id="event-yt-link" href="https://www.youtube.com/@quocthaipc" target="_blank" class="btn-event-yt"><i class="fa-brands fa-youtube"></i> Xem Kênh</a>
- </div>
- </div>
-
- <div id="my-saved-key-box" class="saved-key-banner" style="display: none;">
- <div class="saved-key-content">
- <div class="saved-key-icon"><i class="fa-solid fa-key"></i></div>
- <div>
- <div class="saved-key-title">Khóa Kích Hoạt Gần Nhất Của Bạn (Lưu Trong Trình Duyệt):</div>
- <code id="my-saved-key-val" class="saved-key-code">KEY-XXXX-XXXX</code>
- <span id="my-saved-key-time" class="saved-key-time">Nhận lúc: ...</span>
- </div>
- </div>
- <div class="saved-key-actions">
- <button class="btn-check-saved-key" onclick="autoCheckSavedKey()"><i class="fa-solid fa-magnifying-glass"></i> Tra Cứu Hạn</button>
- <button class="btn-copy-saved-key" onclick="copySavedKey()"><i class="fa-solid fa-copy"></i> Sao Chép</button>
- </div>
- </div>
-
- <section class="hero-section">
- <div class="hero-pill">
- <div class="pulse-dot"></div> Tải File Trực Tiếp • Get Key Link4M Anti-Bypass
- </div>
- <h2 class="hero-title">Tải Tệp Tin & <span class="hero-gradient">Get Key Kích Hoạt</span></h2>
- <p class="hero-subtitle">Tải tệp tin, scripts và ứng dụng <strong>hoàn toàn trực tiếp</strong> không cần vượt link. Chỉ khi bạn cần <strong>Lấy Khóa (Get Key)</strong> mới cần vượt qua Link4M với hệ thống bảo vệ chống bypass HMAC!</p>
- <div class="hero-metrics">
- <div class="metric-item"><i class="fa-solid fa-cloud-arrow-down" style="color: var(--accent-emerald);"></i> <span>100% Free</span> Tải File Trực Tiếp</div>
- <div class="metric-item"><i class="fa-solid fa-fingerprint" style="color: var(--accent-cyan);"></i> <span>HMAC-SHA256</span> Chữ ký bảo mật</div>
- <div class="metric-item"><i class="fa-solid fa-stopwatch" style="color: var(--accent-amber);"></i> <span>Delta-Time</span> Chống Tool Bypass</div>
- </div>
- </section>
-
- <!-- TAB Files -->
- <main id="tab-files" class="tab-content active">
- <div class="explorer-controls">
- <div class="search-input-wrapper">
- <i class="fa-solid fa-magnifying-glass"></i>
- <input type="text" id="file-search" class="search-input" placeholder="Tìm kiếm file, script, apk theo tên hoặc danh mục...">
- </div>
- </div>
- <div class="files-grid" id="files-container">
- <div style="grid-column: 1 / -1; text-align: center; padding: 60px;">
- <i class="fa-solid fa-spinner fa-spin" style="font-size: 40px; color: var(--accent-cyan);"></i>
- <p style="margin-top: 16px; color: var(--text-dim); font-size: 15px;">Đang tải danh sách file...</p>
- </div>
- </div>
- </main>
-
- <!-- TAB GetKey -->
- <section id="tab-getkey" class="tab-content">
- <div class="getkey-card">
- <div class="key-glow-icon"><i class="fa-solid fa-key"></i></div>
- <div id="getkey-vault-reminder" class="vault-reminder-banner" style="display: none;">
- <div style="display: flex; align-items: center; gap: 12px; text-align: left; flex-wrap: wrap;">
- <div class="reminder-pulse-icon"><i class="fa-solid fa-key"></i></div>
- <div style="flex: 1; min-width: 250px;">
- <div style="font-weight: 700; font-size: 14px; color: #fff;">Bạn đang có khóa trong Két: <code id="reminder-key-code" style="color: var(--accent-cyan); font-weight: 800;">---</code></div>
- <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">Khóa vẫn còn hạn sử dụng. Sao chép dùng ngay mà không cần vượt link lại!</div>
- </div>
- <div style="display: flex; gap: 8px;">
- <button type="button" class="btn-vault-copy" onclick="copyReminderKey()"><i class="fa-solid fa-copy"></i> Sao Chép</button>
- <button type="button" class="btn-vault-check" onclick="switchTab('vault')"><i class="fa-solid fa-vault"></i> Vào Két</button>
- </div>
- </div>
- </div>
- <div class="key-stock-wrapper">
- <div id="key-stock-badge" class="key-stock-badge in-stock">
- <span class="stock-dot"></span> <span id="key-stock-text">Đang kiểm tra số lượng khóa...</span>
- </div>
- <div id="ip-limit-badge" class="ip-limit-badge">
- <i class="fa-solid fa-network-wired"></i> <span id="ip-limit-text">IP: Đang kiểm tra giới hạn...</span>
- </div>
- </div>
- <h2 class="getkey-title">Nhận Khóa Kích Hoạt Mới</h2>
- <p class="getkey-desc">Hệ thống bảo vệ cao cấp: Mỗi địa chỉ IP được nhận <strong>tối đa 2 lần / 24 giờ</strong>. Bạn cần <strong>vượt qua 2 Link4M</strong> để nhận mã Key bản quyền 24h!</p>
- <div class="getkey-guide-bar">
- <button type="button" class="btn-yt-guide" onclick="openBypassGuideModal()"><i class="fa-solid fa-circle-question" style="color: var(--accent-cyan);"></i> Hướng Dẫn Vượt Link</button>
- <button type="button" class="btn-yt-guide" onclick="openTutorialVideo()"><i class="fa-brands fa-youtube" style="color: #ff3344;"></i> Video Hướng Dẫn</button>
- <button type="button" class="btn-open-giftcode" onclick="openGiftcodeModal()"><i class="fa-solid fa-gift" style="color: var(--accent-amber);"></i> Nhập Giftcode</button>
- </div>
- <div id="sub2unlock-container" class="sub2unlock-box">
- <div class="sub2unlock-header">
- <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
- <div class="sub2unlock-yt-icon"><i class="fa-brands fa-youtube"></i></div>
- <div>
- <h4 style="font-size: 15px; font-weight: 700; margin: 0;">BƯỚC 1: ĐĂNG KÝ KÊNH YOUTUBE</h4>
- <span style="font-size: 12px; color: var(--text-muted);">Bấm đăng ký kênh để mở khóa nút Lấy Key</span>
- </div>
- </div>
- <span id="sub2unlock-badge" class="sub2unlock-badge locked"><i class="fa-solid fa-lock"></i> Chưa Mở Khóa</span>
- </div>
- <div style="margin-top: 16px;">
- <button type="button" id="btn-sub2unlock" class="btn-sub2unlock-main" onclick="handleSub2Unlock()">
- <i class="fa-brands fa-youtube"></i> <span id="btn-sub2unlock-text">BẤM ĐĂNG KÝ KÊNH ĐỂ MỞ KHÓA</span>
- </button>
- </div>
- <div id="sub2unlock-timer-box" class="sub2unlock-timer" style="display: none;">
- <div class="sub2unlock-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
- <div>
- <div style="font-weight: 700; color: #fff;" id="sub2unlock-timer-text">Đang kiểm tra đăng ký... (5s)</div>
- <div style="font-size: 12.5px; color: var(--text-dim);">Vui lòng giữ tab này vài giây để hệ thống mở khóa tự động!</div>
- </div>
- </div>
- </div>
- <button id="btn-getkey" class="btn-getkey-main btn-locked" onclick="startGetKey()">
- <i class="fa-solid fa-lock" id="btn-getkey-icon"></i> <span id="btn-getkey-text">Vui Lòng Đăng Ký Kênh Để Mở Khóa</span>
- </button>
- <div style="margin-top: 20px; font-size: 13px; color: var(--text-dim);" id="wait-notice">
- <i class="fa-solid fa-clock-rotate-left"></i> Thời gian chờ chống bypass: 20s / mỗi link
- </div>
- <div class="steps-list">
- <div class="step-item">
- <div class="step-num">BƯỚC 01 / 02</div>
- <div class="step-text">Bấm bắt đầu và vượt <strong>Link4M số 1</strong>. Giải captcha an toàn và chờ hết thời gian đếm ngược.</div>
- </div>
- <div class="step-item">
- <div class="step-num">BƯỚC 02 / 02</div>
- <div class="step-text">Trở về xác nhận và vượt tiếp <strong>Link4M số 2</strong> — bước cuối cùng.</div>
- </div>
- <div class="step-item">
- <div class="step-num">NHẬN KHÓA</div>
- <div class="step-text">Hệ thống tự động cấp Key kích hoạt độc quyền và lưu vào Két Khóa của bạn!</div>
- </div>
- </div>
- </div>
- </section>
-
- <!-- Các tab còn lại: verify, checkkey, vault, videos, about... giữ nguyên cấu trúc -->
- <section id="tab-verify" class="tab-content">
- <div id="verify-result-box">
- <div class="result-card">
- <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 48px; color: var(--accent-cyan); margin-bottom: 20px;"></i>
- <h3>Đang xác thực...</h3>
- <p style="color: var(--text-muted); margin-top: 8px;">Màn hình này sẽ tự kích hoạt khi bạn hoàn thành Link4M và quay lại.</p>
- </div>
- </div>
- </section>
-
- <section id="tab-checkkey" class="tab-content">
- <div class="check-key-box">
- <div style="text-align: center; margin-bottom: 28px;">
- <i class="fa-solid fa-id-card-clip" style="font-size: 42px; color: var(--accent-cyan); margin-bottom: 12px;"></i>
- <h2 style="font-size: 22px; font-weight: 700;">Tra Cứu Khóa Kích Hoạt</h2>
- <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">Kiểm tra thời hạn còn lại của mã key</p>
- </div>
- <form id="check-key-form">
- <div class="form-group">
- <label class="form-label" for="check-key-input">DÁN MÃ KHÓA CỦA BẠN VÀO ĐÂY:</label>
- <input type="text" id="check-key-input" class="form-control" placeholder="KEY-XXXX-XXXX-XXXX" required>
- </div>
- <button type="submit" class="btn-submit"><i class="fa-solid fa-magnifying-glass"></i> Kiểm Tra Ngay</button>
- </form>
- <div id="check-key-result"></div>
- <div id="user-keys-vault" class="user-keys-vault" style="display: none; margin-top: 32px;">
- <div class="vault-header">
- <div style="display: flex; align-items: center; gap: 8px;">
- <i class="fa-solid fa-wallet" style="color: var(--accent-cyan); font-size: 18px;"></i>
- <h3 style="font-size: 16px; font-weight: 700; margin: 0; color: #fff;">Ví Khóa Của Bạn</h3>
- </div>
- <button type="button" class="btn-clear-history" onclick="clearKeysHistory()"><i class="fa-solid fa-trash-can"></i> Xóa Lịch Sử</button>
- </div>
- <div id="vault-keys-list" class="vault-keys-list"></div>
- </div>
- </div>
- </section>
-
- <!-- TAB Vault, Videos, About... giữ nguyên -->
-
- <footer class="footer">
- <div>© 2026 KeyMaster PRO — Thiết kế chuẩn Hologram</div>
- <div class="footer-badges">
- <div class="shield-badge"><i class="fa-solid fa-circle-check"></i> HMAC-SHA256</div>
- <div class="shield-badge"><i class="fa-solid fa-server"></i> Render Ready</div>
- <div class="shield-badge"><i class="fa-solid fa-shield-halved"></i> Anti-Bypass</div>
- </div>
- </footer>
-</div>
-
-<!-- Modal, script... giữ nguyên -->
-<script src="https://brmodgetkey.onrender.com/js/app.js?v=3.5"></script>
-</body></html>
+        <a href="admin.html" class="cta-button">
+            ⚙️ Truy Cập Bảng Điều Khiển
+        </a>
+    </main>
+</body>
+</html>
